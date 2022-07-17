@@ -20,7 +20,6 @@ const Login = () => {
         }).then((response) => {
             setPasswordStatus(response.data.message1)
             setUsernameStatus(response.data.message2)
-            console.log(response);
             if (response.data.auth == true) {
                 navigate("/")
             }
@@ -35,7 +34,6 @@ const Login = () => {
         })
     }, [])
 
-    if (loginStatus == true) {
         return (
             <div>
                 <Navbar />

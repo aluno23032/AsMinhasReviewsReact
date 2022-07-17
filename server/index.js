@@ -85,7 +85,6 @@ app.post("/login", (req, res) => {
         if (result.length > 0) {
             bcrypt.compare(password, result[0].Password, (error, response) => {
                 if (response) {
-                    const id = result[0].id
                     req.session.user = result
                     res.send({auth: true, result: result, message1: "", message2: ""})
                 } else {
