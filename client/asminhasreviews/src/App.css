@@ -67,3 +67,7 @@
   margin-bottom: 0px;
   color:red;
 }
+
+.nav-link:hover{
+  cursor:pointer
+}

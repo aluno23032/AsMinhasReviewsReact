@@ -7,11 +7,21 @@ const Navbar = () => {
     const [loginStatus, setLoginStatus] = useState(false)
     const [username, setUsername] = useState("")
 
+    const logout = () => {
+        Axios.post("http://localhost:3001/logout", {}).then((response) => {
+            setLoginStatus(false)
+        })
+    }
+
     useEffect(() => {
-        Axios.get("http://localhost:3001/login").then((response) => {
-            if (response.data.auth == true) {
+        Axios.get("http://localhost:3001/isUserAuth", {
+        }).then((response) => {
+            console.log(response)
+            if(response.data.auth == true) {
+                setUsername(response.data.user[0].Nome)
                 setLoginStatus(true)
-                setUsername(response.data.user.username)
+            } else {
+                setLoginStatus(false)
             }
         })
     }, [])
@@ -71,12 +81,12 @@ const Navbar = () => {
                     </ul>
                     <ul style={{ float: "right", marginRight: "16%" }} className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="/Account/Register">
-                                Olá {username}
+                            <a className="nav-link" href="/Account/Details">
+                                Olá {username}!
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link">
+                            <a className="nav-link" onClick={logout}>
                                 Logout
                             </a>
                         </li>

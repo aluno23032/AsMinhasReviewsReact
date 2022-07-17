@@ -66,12 +66,25 @@ app.post("/register", (req, res) => {
     })
 })
 
+app.get("/isUserAuth", (req, res) => {
+    if (req.session.user) {
+        res.send({auth:true, user: req.session.user})
+    } else {
+        res.send({auth:false})
+    } 
+})
+
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({auth: true, user: req.session.user})
     } else {
         res.send({auth: false})
     }
+})
+
+app.post("/logout", (req, res) => {
+    res.send({auth:false})
+    delete req.session.user;
 })
 
 app.post("/login", (req, res) => {
@@ -86,7 +99,7 @@ app.post("/login", (req, res) => {
             bcrypt.compare(password, result[0].Password, (error, response) => {
                 if (response) {
                     req.session.user = result
-                    res.send({auth: true, result: result, message1: "", message2: ""})
+                    res.send({ auth: true, result: result, message1: "", message2: ""})
                 } else {
                     res.send({ auth:false, message1: "Password incorreta.", message2: ""})
                 }
