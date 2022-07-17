@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react"
 import logo from './estrela.png';
 import Axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
 
     const [loginStatus, setLoginStatus] = useState(false)
     const [username, setUsername] = useState("")
+    const navigate = useNavigate()
+
+    Axios.defaults.withCredentials = true;
 
     const logout = () => {
         Axios.post("http://localhost:3001/logout", {}).then((response) => {
@@ -16,12 +20,9 @@ const Navbar = () => {
     useEffect(() => {
         Axios.get("http://localhost:3001/isUserAuth", {
         }).then((response) => {
-            console.log(response)
             if(response.data.auth == true) {
                 setUsername(response.data.user[0].Nome)
                 setLoginStatus(true)
-            } else {
-                setLoginStatus(false)
             }
         })
     }, [])

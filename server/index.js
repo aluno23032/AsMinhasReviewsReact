@@ -84,7 +84,7 @@ app.get("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
     res.send({auth:false})
-    delete req.session.user;
+    req.session.destroy();
 })
 
 app.post("/login", (req, res) => {
