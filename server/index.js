@@ -66,14 +66,6 @@ app.post("/register", (req, res) => {
     })
 })
 
-app.get("/isUserAuth", (req, res) => {
-    if (req.session.user) {
-        res.send({auth:true, user: req.session.user})
-    } else {
-        res.send({auth:false})
-    } 
-})
-
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({auth: true, user: req.session.user})
@@ -85,6 +77,19 @@ app.get("/login", (req, res) => {
 app.post("/logout", (req, res) => {
     res.send({auth:false})
     req.session.destroy();
+})
+
+app.post("/details", (req, res) => {
+    const username = req.body.username
+    const usernameNovo = req.body.usernameNovo
+    db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Ocorreu um erro.", confirm: ""})
+        } else {
+            res.send({erro: "", confirm: "Nome de utilizador alterado com sucesso."})
+        }
+    })
 })
 
 app.post("/login", (req, res) => {

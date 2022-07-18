@@ -54,17 +54,17 @@ const Login = () => {
             <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
                 <h1>Login</h1>
                 <br />
-                <p className="RegErro">{usernameStatus}</p>
                 <p className="RegText">Nome de utilizador</p>
                 <input className="input" type="text" onChange={(e) => { setUsername(e.target.value) }}></input>
+                <p className="RegErro">{usernameStatus}</p>
                 <br />
-                <br />
-                <p className="RegErro">{passwordStatus}</p>
                 <p className="RegText">Palavra-passe</p>
                 <input className="input" type="password" onChange={(e) => { setPassword(e.target.value) }}></input>
-                <br />
+                <p className="RegErro">{passwordStatus}</p>
                 <br />
                 <button onClick={login} className="mainButton">Login</button>
+                <br />
+                <a href="../Register">Registar um novo utilizador</a>
             </div>
             <Footer />
         </div>

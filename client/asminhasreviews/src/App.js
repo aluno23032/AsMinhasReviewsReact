@@ -5,6 +5,7 @@ import Home from "./Pages/home.js"
 import JogosIndex from "./Pages/Jogos/index.js"
 import Register from "./Pages/Account/register.js"
 import Login from "./Pages/Account/login.js"
+import Details from "./Pages/Account/details.js"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/Jogos" element={<JogosIndex/>}></Route>
           <Route path="/Account/Register" element={<Register/>}></Route>
           <Route path="/Account/Login" element={<Login/>}></Route>
+          <Route path="/Account/Details" element={<Details/>}></Route>
         </Routes>
       </Router>
     </div>

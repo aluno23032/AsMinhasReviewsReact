@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react"
 import logo from './estrela.png';
 import Axios from "axios"
-import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
 
     const [loginStatus, setLoginStatus] = useState(false)
     const [username, setUsername] = useState("")
-    const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
 
@@ -18,7 +16,7 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/isUserAuth", {
+        Axios.get("http://localhost:3001/login", {
         }).then((response) => {
             if(response.data.auth == true) {
                 setUsername(response.data.user[0].Nome)
