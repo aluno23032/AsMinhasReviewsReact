@@ -6,6 +6,8 @@ import JogosIndex from "./Pages/Jogos/index.js"
 import Register from "./Pages/Account/register.js"
 import Login from "./Pages/Account/login.js"
 import Details from "./Pages/Account/details.js"
+import ChangeEmail from "./Pages/Account/changeEmail.js"
+import ChangePassword from "./Pages/Account/changePassword.js"
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/Account/Register" element={<Register/>}></Route>
           <Route path="/Account/Login" element={<Login/>}></Route>
           <Route path="/Account/Details" element={<Details/>}></Route>
+          <Route path="/Account/Details/Email" element={<ChangeEmail/>}></Route>
+          <Route path="/Account/Details/Password" element={<ChangePassword/>}></Route>
         </Routes>
       </Router>
     </div>

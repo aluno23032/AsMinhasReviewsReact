@@ -27,7 +27,7 @@ const Register = () => {
                     setEmailStatus(response.data.message2)
                     console.log(response);
                     if(response.data.registado == "true") {
-                        navigate("/");
+                        navigate("/Account/Login");
                     }
             })
         }
