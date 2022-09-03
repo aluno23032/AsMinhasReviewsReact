@@ -3,10 +3,9 @@ import React from "react"
 const Footer = () => {
     return (
         <div style={{
-            marginLeft: '16%', verticalAlign: "middle", position: "absolute",
-            bottom: "0px",
+            position:"fixed", bottom: "0", backgroundColor: "white", width: "100%", borderTop: "1px solid #dee2e6", height: "6%"
         }}>
-            <div style={{display:"flex"}}>
+            <div style={{display:"flex", marginTop: "0.7%", marginLeft: '16%'}}>
                 <p>© 2022 - AsMinhasReviews |</p>
                 <a style={{marginLeft:"5px"}} href="https://github.com/aluno23032/AsMinhasReviewsReact">Repositório no Github</a>
             </div>
