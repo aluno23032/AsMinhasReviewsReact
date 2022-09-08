@@ -96,3 +96,14 @@
 .nav-link:hover{
   cursor:pointer
 }
+
+.tituloLink{
+  font-size: 30px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.tituloLink:hover{
+    color: #0d6efd;
+}

@@ -37,12 +37,12 @@ const Navbar = () => {
                     </a>
                     <ul style={{ flexGrow: "1" }} className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="Jogos">
+                            <a className="nav-link" href="/Jogos/Index/Rating">
                                 Os melhores jogos
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="Jogos">
+                            <a className="nav-link" href="/Jogos/Index/DataLancamento">
                                 Os jogos mais recentes
                             </a>
                         </li>
@@ -70,13 +70,13 @@ const Navbar = () => {
                         As Minhas Reviews <img height="15px" src={logo} style={{ marginBottom: '4px' }} />
                     </a>
                     <ul style={{ flexGrow: "1" }} className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link" href="Jogos">
+                    <li className="nav-item">
+                            <a className="nav-link" href="/Jogos/Index/Rating">
                                 Os melhores jogos
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="Jogos">
+                            <a className="nav-link" href="/Jogos/Index/DataLancamento">
                                 Os jogos mais recentes
                             </a>
                         </li>

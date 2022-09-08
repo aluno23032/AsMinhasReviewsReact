@@ -41,7 +41,7 @@ app.post("/register", (req, res) => {
     const username = req.body.username
     const email = req.body.email
     const password = req.body.password
-    bcrypt.hash(password, saltRounds, (hash) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
         db.query("SELECT * FROM Utilizadores WHERE Nome = ?;", username, (err, result) => {
             if (err) {
                 console.log(err)
@@ -49,12 +49,12 @@ app.post("/register", (req, res) => {
             if (result.length > 0) {
                 res.send({ message1: "Esse nome de utilizador não está disponível.", message2: "" })
             } else {
-            db.query("SELECT * FROM Utilizadores WHERE Email = ?;", email, (result) => {
+            db.query("SELECT * FROM Utilizadores WHERE Email = ?;", email, (err, result) => {
                 if (result.length > 0) {
                     res.send({ message2: "Esse email não está disponível.", message1: "" })
                 }
                 else {
-                    db.query("INSERT INTO Utilizadores (Nome, Email, Password) VALUES (?,?,?)", [username, email, hash], (err) => {
+                    db.query("INSERT INTO Utilizadores (Nome, Email, Password) VALUES (?,?,?)", [username, email, hash], (err, result) => {
                         if (err) {
                             console.log(err)
                         }
@@ -82,7 +82,7 @@ app.post("/logout", (req, res) => {
 app.post("/details", (req, res) => {
     const username = req.body.username
     const usernameNovo = req.body.usernameNovo
-    db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err) => {
+    db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err, result) => {
         if (err) {
             console.log(err)
             res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -96,7 +96,7 @@ app.post("/details", (req, res) => {
 app.post("/changeEmail", (req, res) => {
     const email = req.body.email
     const emailNovo = req.body.emailNovo
-    db.query("UPDATE Utilizadores SET Email = ? WHERE Email = ?;", [emailNovo, email], (err) => {
+    db.query("UPDATE Utilizadores SET Email = ? WHERE Email = ?;", [emailNovo, email], (err, result) => {
         if (err) {
             console.log(err)
             res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -109,7 +109,7 @@ app.post("/changeEmail", (req, res) => {
 app.post("/changePassword", (req, res) => {
     const password = req.body.password
     bcrypt.hash(password, saltRounds, (hash) => {
-        db.query("UPDATE Utilizadores SET Password = ? WHERE Nome = ?;", [hash, req.session.user[0].Nome], (err) => {
+        db.query("UPDATE Utilizadores SET Password = ? WHERE Nome = ?;", [hash, req.session.user[0].Nome], (err, result) => {
             if (err) {
                 console.log(err)
                 res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -123,13 +123,12 @@ app.post("/changePassword", (req, res) => {
 app.post("/login", (req, res) => {
     const username = req.body.username
     const password = req.body.password
-
-    db.query("SELECT * FROM Utilizadores WHERE Nome = ?", username, (err, result) => {
+    db.query("SELECT * FROM Utilizadores INNER JOIN userroles ON Utilizadores.Id = userroles.UserId WHERE Nome = ?", username, (err, result) => {
         if (err) {
             console.log(err)
         }
         if (result.length > 0) {
-            bcrypt.compare(password, result[0].Password, (response) => {
+            bcrypt.compare(password, result[0].Password, (err, response) => {
                 if (response) {
                     req.session.user = result
                     res.send({ auth: true, result: result, message1: "", message2: ""})
@@ -145,13 +144,24 @@ app.post("/login", (req, res) => {
 )
 
 app.get("/listajogos", (req, res) => {
-    db.query("SELECT * FROM jogos", (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    });
+    const ordem = req.query.ordem
+    if (ordem == "Rating") {
+        db.query("SELECT * FROM jogos ORDER BY Rating DESC", (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
+    } else {
+        db.query("SELECT * FROM jogos ORDER BY DataLancamento DESC", (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
+    }
   });
 
 app.listen(3001, () => {
