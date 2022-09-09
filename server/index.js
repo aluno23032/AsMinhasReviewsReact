@@ -5,11 +5,12 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
+const fileUpload = require('express-fileupload');
 
 const saltRounds = 10;
 
 const app = express();
-
+app.use(fileUpload());
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -26,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie:{
-        expires: 60*60*24
+        expires: 60*60*60*24
     }
 }))
 
@@ -41,7 +42,7 @@ app.post("/register", (req, res) => {
     const username = req.body.username
     const email = req.body.email
     const password = req.body.password
-    bcrypt.hash(password, saltRounds, (hash) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
         db.query("SELECT * FROM Utilizadores WHERE Nome = ?;", username, (err, result) => {
             if (err) {
                 console.log(err)
@@ -49,12 +50,12 @@ app.post("/register", (req, res) => {
             if (result.length > 0) {
                 res.send({ message1: "Esse nome de utilizador não está disponível.", message2: "" })
             } else {
-            db.query("SELECT * FROM Utilizadores WHERE Email = ?;", email, (result) => {
+            db.query("SELECT * FROM Utilizadores WHERE Email = ?;", email, (err, result) => {
                 if (result.length > 0) {
                     res.send({ message2: "Esse email não está disponível.", message1: "" })
                 }
                 else {
-                    db.query("INSERT INTO Utilizadores (Nome, Email, Password) VALUES (?,?,?)", [username, email, hash], (err) => {
+                    db.query("INSERT INTO Utilizadores (Nome, Email, Password) VALUES (?,?,?)", [username, email, hash], (err, result) => {
                         if (err) {
                             console.log(err)
                         }
@@ -70,7 +71,7 @@ app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({auth: true, user: req.session.user})
     } else {
-        res.send({auth: false})
+        res.send({auth: false, user: "n"})
     }
 })
 
@@ -82,7 +83,7 @@ app.post("/logout", (req, res) => {
 app.post("/details", (req, res) => {
     const username = req.body.username
     const usernameNovo = req.body.usernameNovo
-    db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err) => {
+    db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err, result) => {
         if (err) {
             console.log(err)
             res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -96,7 +97,7 @@ app.post("/details", (req, res) => {
 app.post("/changeEmail", (req, res) => {
     const email = req.body.email
     const emailNovo = req.body.emailNovo
-    db.query("UPDATE Utilizadores SET Email = ? WHERE Email = ?;", [emailNovo, email], (err) => {
+    db.query("UPDATE Utilizadores SET Email = ? WHERE Email = ?;", [emailNovo, email], (err, result) => {
         if (err) {
             console.log(err)
             res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -109,7 +110,7 @@ app.post("/changeEmail", (req, res) => {
 app.post("/changePassword", (req, res) => {
     const password = req.body.password
     bcrypt.hash(password, saltRounds, (hash) => {
-        db.query("UPDATE Utilizadores SET Password = ? WHERE Nome = ?;", [hash, req.session.user[0].Nome], (err) => {
+        db.query("UPDATE Utilizadores SET Password = ? WHERE Nome = ?;", [hash, req.session.user[0].Nome], (err, result) => {
             if (err) {
                 console.log(err)
                 res.send({erro: "Ocorreu um erro.", confirm: ""})
@@ -123,13 +124,12 @@ app.post("/changePassword", (req, res) => {
 app.post("/login", (req, res) => {
     const username = req.body.username
     const password = req.body.password
-
-    db.query("SELECT * FROM Utilizadores WHERE Nome = ?", username, (err, result) => {
+    db.query("SELECT * FROM Utilizadores INNER JOIN userroles ON Utilizadores.Id = userroles.UserId WHERE Nome = ?", username, (err, result) => {
         if (err) {
             console.log(err)
         }
         if (result.length > 0) {
-            bcrypt.compare(password, result[0].Password, (response) => {
+            bcrypt.compare(password, result[0].Password, (err, response) => {
                 if (response) {
                     req.session.user = result
                     res.send({ auth: true, result: result, message1: "", message2: ""})
@@ -144,15 +144,72 @@ app.post("/login", (req, res) => {
 }
 )
 
-app.get("/listajogos", (req, res) => {
-    db.query("SELECT * FROM jogos", (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    });
+app.get("/getJogo", (req, res) => {
+    const idJogo = req.query.idJogo
+        db.query("SELECT * FROM jogos WHERE Id = ?", idJogo,(err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
   });
+
+app.get("/listajogos", (req, res) => {
+    const ordem = req.query.ordem
+    if (ordem == "Rating") {
+        db.query("SELECT * FROM jogos ORDER BY Rating DESC", (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
+    } else {
+        db.query("SELECT * FROM jogos ORDER BY DataLancamento DESC", (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
+    }
+  });
+
+app.post("/jogoCriar", (req, res) => {
+    const nome = req.body.nome
+    const nomeFormatado = req.body.nome.toLowerCase()
+    const capa = nomeFormatado + "." + req.body.capa
+    const plataformas = req.body.plataformas
+    const dataLancamento = req.body.dataLancamento
+    const descricao = req.body.descricao
+    const file = req.files.capaFicheiro
+    const fotos = req.files.fotos
+    const fotosLength = req.body.fotosLength
+    const fotosExt = req.body.fotosExt
+    let i = 0
+    while (i < fotosLength) {
+        fotos[i].mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${nomeFormatado + (i+1) + "." + fotosExt[i]}`, err => {
+            if (err) {
+              console.error(err);
+              return res.status(500).send(err);
+            }
+        });
+        i++
+    }
+    file.mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${capa}`, err => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
+        }
+    });
+    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao) VALUES (?,?,?,?,0,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({criado: "true"})
+    })
+});
 
 app.listen(3001, () => {
     console.log("Servidor a correr")
