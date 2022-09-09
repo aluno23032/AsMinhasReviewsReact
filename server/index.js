@@ -5,11 +5,12 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
+const fileUpload = require('express-fileupload');
 
 const saltRounds = 10;
 
 const app = express();
-
+app.use(fileUpload());
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -26,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie:{
-        expires: 60*60*24
+        expires: 60*60*60*24
     }
 }))
 
@@ -70,7 +71,7 @@ app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({auth: true, user: req.session.user})
     } else {
-        res.send({auth: false})
+        res.send({auth: false, user: "n"})
     }
 })
 
@@ -163,6 +164,28 @@ app.get("/listajogos", (req, res) => {
           });
     }
   });
+
+app.post("/jogoCriar", (req, res) => {
+    const nome = req.body.nome
+    const nomeFormatado = req.body.nome.toLowerCase()
+    const capa = nomeFormatado + "." + req.body.capa
+    const plataformas = req.body.plataformas
+    const dataLancamento = req.body.dataLancamento
+    const descricao = req.body.descricao
+    const file = req.files.capaFicheiro
+    file.mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${capa}`, err => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
+        }
+    });
+    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao) VALUES (?,?,?,?,0,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({criado: "true"})
+    })
+});
 
 app.listen(3001, () => {
     console.log("Servidor a correr")
