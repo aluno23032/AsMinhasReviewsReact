@@ -63,7 +63,15 @@ const CriarJogo = () => {
     }
 
     if (role != "a") {
-        return (<div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left", width: "1300px" }}>A criação de jogos é exclusiva a administradores</div>)
+        return (
+            <div>
+                <Navbar />
+                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left", width: "1300px" }}>
+                    A criação de jogos é exclusiva a administradores
+                </div>
+                <Footer />
+            </div>
+        )
     } else {
         return (
             <div>
@@ -89,7 +97,7 @@ const CriarJogo = () => {
                     <input type="file" multiple style={{ height: "40px" }} onChange={(e) => { uploadFotos(e) }}></input>
                     <br />
                     <br />
-                    <button style={{ width: "5%", height: "40px", fontSize: "18px" }} onClick={jogoCriar} className="mainButton">Criar</button>
+                    <button style={{ width: "5%", height: "40px", fontSize: "16px"}} onClick={jogoCriar} className="mainButton">Criar</button>
                 </div>
                 <Footer />
             </div>

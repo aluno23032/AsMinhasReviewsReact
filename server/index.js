@@ -189,7 +189,7 @@ app.post("/jogoCriar", (req, res) => {
     const fotosExt = req.body.fotosExt
     let i = 0
     while (i < fotosLength) {
-        fotos[i].mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${nomeFormatado + (i+1) + "." + fotosExt[i]}`, err => {
+        fotos[i].mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${nomeFormatado + (i+1) + "." + "png"}`, err => {
             if (err) {
               console.error(err);
               return res.status(500).send(err);
@@ -203,7 +203,7 @@ app.post("/jogoCriar", (req, res) => {
           return res.status(500).send(err);
         }
     });
-    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao) VALUES (?,?,?,?,0,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao], (err, result) => {
+    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao, NumeroImgs) VALUES (?,?,?,?,0,?,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao, fotosLength], (err, result) => {
         if (err) {
             console.log(err)
         }

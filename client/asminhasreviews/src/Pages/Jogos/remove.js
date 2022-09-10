@@ -9,30 +9,35 @@ const Index = () => {
 
     const [listaJogos, setListaJogos] = useState([]);
     const [imagePath] = useState("/Fotos/");
-    const [role, setRole] = useState("");
-    const [userId, setUserId] = useState()
     const { idJogo } = useParams();
+    const [role, setRole] = useState("")
+    const [listaFotos, setListaFotos] = useState([]);
+
+    const jogoRemover = () => {
+
+    }
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {
             setListaJogos(response.data);
+            for (let i = 0; i < response.data[0].NumeroImgs; i++) {
+                setListaFotos(listaFotos => [...listaFotos, response.data[0].NomeFormatado + (i + 1) + ".png"])
+            }
         });
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
                 setRole("a")
             }
-            if (response.data.user[0])
-                setUserId(response.data.user[0].Id)
         })
     }, [])
 
     if (role != "a") {
         return (
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "left" }}>
                 <Navbar />
-                <div style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "1300px", marginBottom: "100px" }}></div>
+                <div style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "1300px", marginBottom: "100px" }}><br></br>A remoção de jogos é exclusiva a administradores</div>
                 <Footer />
             </div>
         )
@@ -42,64 +47,68 @@ const Index = () => {
                 <Navbar />
                 <div style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "1300px", marginBottom: "100px" }}>
                     <h1 style={{ marginTop: "20px", textAlign: "left" }}>Remover jogo</h1>
-                    <hr style={{ marginBottom: "5px" }}></hr>
+                    <hr style={{ marginBottom: "15px" }}></hr>
                     <table>
-                        <tbody>
+                        <tbody style={{ textAlign: "left", verticalAlign: "top" }}>
+                            {listaJogos.map((val, key) => {
+                                return (
+                                    <><tr>
+                                        <td>
+                                            <b>Nome</b>
+                                        </td>
+                                        <td style={{ marginBottom: "10px", display: "block" }}>
+                                            {listaJogos[0].Nome}
+                                        </td>
+                                    </tr><tr>
+                                            <td>
+                                                <b>Capa</b>
+                                            </td>
+                                            <td style={{ marginBottom: "10px", display: "block" }}>
+                                                <img height="175px" src={imagePath + listaJogos[0].Capa}></img>
+                                            </td>
+                                        </tr><tr>
+                                            <td>
+                                                <b>Plataformas</b>
+                                            </td>
+                                            <td style={{ marginBottom: "10px", display: "block" }}>
+                                                {listaJogos[0].Plataformas}
+                                            </td>
+                                        </tr><tr>
+                                            <td>
+                                                <b>Rating</b>
+                                            </td>
+                                            <td style={{ marginBottom: "10px", display: "block" }}>
+                                                {listaJogos[0].Rating}
+                                            </td>
+                                        </tr><tr>
+                                            <td>
+                                                <b>Data de Lancamento</b>
+                                            </td>
+                                            <td style={{ marginBottom: "10px", display: "block" }}>
+                                                {dateFormat(listaJogos[0].DataLancamento, "dd")}/{dateFormat(listaJogos[0].DataLancamento, "mm")}/{dateFormat(listaJogos[0].DataLancamento, "yyyy")}
+                                            </td>
+                                        </tr><tr>
+                                            <td>
+                                                <b>Descrição</b>
+                                            </td>
+                                            <td style={{ marginBottom: "10px", display: "block" }}>
+                                                {listaJogos[0].Descricao}
+                                            </td>
+                                        </tr></>
+                                )
+                            })}
                             <tr>
+                                <td style={{ textAlign: "left", marginRight: "130px", display: "block" }}><b>Fotografias</b></td>
                                 <td>
-                                    <b>Nome:</b>
-                                </td>
-                                <td>
-                                    {listaJogos[0].Nome}
+                                    {listaFotos.map((val, key) => {
+                                        return (
+                                            <img style={{ float: "left", marginRight: "10px" }} height="150px" src={imagePath + val}></img>
+                                        )
+                                    })}
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <b>Capa:</b>
-                                </td>
-                                <td style={{ paddingRight: "10px" }}>
-                                    <img height="175px" src={imagePath + listaJogos[0].Capa}></img>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Plataformas:</b>
-                                </td>
-                                <td>
-                                    {listaJogos[0].Plataformas}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Rating:</b>
-                                </td>
-                                <td>
-                                    {listaJogos[0].Rating}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Data de Lancamento:</b>
-                                </td>
-                                <td>
-                                    {dateFormat(listaJogos[0].DataLancamento, "dd")}/{dateFormat(listaJogos[0].DataLancamento, "mm")}/{dateFormat(listaJogos[0].DataLancamento, "yyyy")}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Descrição:</b>
-                                </td>
-                                <td>
-                                    {listaJogos[0].Descricao}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Fotos:</b>
-                                </td>
-                                <td style={{ paddingRight: "10px" }}>
-                                    <img height="175px" src={imagePath + listaJogos[0].Capa}></img>
-                                </td>
+                                <button className="btnRemover" onClick={jogoRemover}>Remover</button>
                             </tr>
                         </tbody>
                     </table>
