@@ -4,7 +4,10 @@ import Footer from "./../../Components/Footer/Footer.js"
 import Axios from "axios"
 import dateFormat from "dateformat"
 import { useParams } from "react-router-dom"
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
+=======
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
 
 const Index = () => {
 
@@ -13,6 +16,7 @@ const Index = () => {
     const { idJogo } = useParams();
     const [role, setRole] = useState("")
     const [listaFotos, setListaFotos] = useState([]);
+<<<<<<< HEAD
     const navigate = useNavigate()
 
     const jogoRemover = () => {
@@ -24,13 +28,21 @@ const Index = () => {
                 navigate("/Jogos/Index/DataLancamento");
             }
         });
+=======
+
+    const jogoRemover = () => {
+
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
     }
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {
+<<<<<<< HEAD
             console.log(response);
+=======
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
             setListaJogos(response.data);
             for (let i = 0; i < response.data[0].NumeroImgs; i++) {
                 setListaFotos(listaFotos => [...listaFotos, response.data[0].NomeFormatado + (i + 1) + ".png"])
@@ -118,9 +130,13 @@ const Index = () => {
                                 </td>
                             </tr>
                             <tr>
+<<<<<<< HEAD
                                 <td>
                                     <button className="btnRemover" onClick={jogoRemover}>Remover</button>
                                 </td>
+=======
+                                <button className="btnRemover" onClick={jogoRemover}>Remover</button>
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
                             </tr>
                         </tbody>
                     </table>

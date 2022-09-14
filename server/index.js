@@ -221,7 +221,11 @@ app.post("/jogoCriar", (req, res) => {
     const fotosExt = req.body.fotosExt
     let i = 0
     while (i < fotosLength) {
+<<<<<<< HEAD
         fotos[i].mv("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i+1) + ".png", err => {
+=======
+        fotos[i].mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${nomeFormatado + (i+1) + "." + "png"}`, err => {
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
             if (err) {
               console.error(err);
               return res.status(500).send(err);
@@ -229,7 +233,11 @@ app.post("/jogoCriar", (req, res) => {
         });
         i++
     }
+<<<<<<< HEAD
     file.mv("./../client/asminhasreviews/public/Fotos/" + capa, err => {
+=======
+    file.mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${capa}`, err => {
+>>>>>>> 570bde3097122e5812dcc780cb7301713fdfd0fd
         if (err) {
           console.error(err);
           return res.status(500).send(err);
