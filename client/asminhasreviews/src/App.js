@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import Home from "./Pages/home.js"
 import JogosIndex from "./Pages/Jogos/index.js"
 import JogosCreate from "./Pages/Jogos/create.js"
+import JogosRemove from "./Pages/Jogos/remove.js"
 import Register from "./Pages/Account/register.js"
 import Login from "./Pages/Account/login.js"
 import Details from "./Pages/Account/details.js"
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/Jogos/Index/:ordem" element={<JogosIndex/>}></Route>
+          <Route path="/Jogos/Remove/:idJogo" element={<JogosRemove/>}></Route>
           <Route path="/Jogos/Create" element={<JogosCreate/>}></Route>
           <Route path="/Account/Register" element={<Register/>}></Route>
           <Route path="/Account/Login" element={<Login/>}></Route>

@@ -6,6 +6,7 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const fileUpload = require('express-fileupload');
+fs = require('fs');
 
 const saltRounds = 10;
 
@@ -144,6 +145,17 @@ app.post("/login", (req, res) => {
 }
 )
 
+app.get("/getJogo", (req, res) => {
+    const idJogo = req.query.idJogo
+        db.query("SELECT * FROM jogos WHERE Id = ?", idJogo,(err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result);
+            }
+          });
+  });
+
 app.get("/listajogos", (req, res) => {
     const ordem = req.query.ordem
     if (ordem == "Rating") {
@@ -165,6 +177,37 @@ app.get("/listajogos", (req, res) => {
     }
   });
 
+  app.post("/removerJogo", (req, res) => {
+    const idJogo = req.body.idJogo
+    const capa = req.body.capa
+    const nomeFormatado = req.body.nomeFormatado
+    const fotosLength = req.body.fotosLength
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function(err) {
+        if (err) {
+          throw err
+        } else {
+          console.log("Successfully deleted the file.")
+        }
+      })
+    let i = 0
+    while (i < fotosLength) {
+        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i+1) + ".png", function(err) {
+            if (err) {
+              throw err
+            } else {
+              console.log("Successfully deleted the file.")
+            }
+          })
+        i++
+    }
+    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({apagado: "true"})
+    })
+});
+
 app.post("/jogoCriar", (req, res) => {
     const nome = req.body.nome
     const nomeFormatado = req.body.nome.toLowerCase()
@@ -173,13 +216,26 @@ app.post("/jogoCriar", (req, res) => {
     const dataLancamento = req.body.dataLancamento
     const descricao = req.body.descricao
     const file = req.files.capaFicheiro
-    file.mv(`${__dirname}/../client/asminhasreviews/public/Fotos/${capa}`, err => {
+    const fotos = req.files.fotos
+    const fotosLength = req.body.fotosLength
+    const fotosExt = req.body.fotosExt
+    let i = 0
+    while (i < fotosLength) {
+        fotos[i].mv("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i+1) + ".png", err => {
+            if (err) {
+              console.error(err);
+              return res.status(500).send(err);
+            }
+        });
+        i++
+    }
+    file.mv("./../client/asminhasreviews/public/Fotos/" + capa, err => {
         if (err) {
           console.error(err);
           return res.status(500).send(err);
         }
     });
-    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao) VALUES (?,?,?,?,0,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao], (err, result) => {
+    db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao, NumeroImgs) VALUES (?,?,?,?,0,?,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao, fotosLength], (err, result) => {
         if (err) {
             console.log(err)
         }
