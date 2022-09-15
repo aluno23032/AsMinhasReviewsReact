@@ -158,6 +158,17 @@ app.get("/getJogo", (req, res) => {
     });
 });
 
+app.get("/getReviewsJogo", (req, res) => {
+    const idJogo = req.query.idJogo
+    db.query("SELECT *, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome FROM reviews WHERE Jogo = ?", idJogo, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 app.get("/listajogos", (req, res) => {
     const ordem = req.query.ordem
     if (ordem == "Rating") {
