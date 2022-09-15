@@ -4,6 +4,7 @@ import Footer from "./../../Components/Footer/Footer.js"
 import Axios from "axios"
 import dateFormat from "dateformat"
 import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
 
@@ -12,15 +13,24 @@ const Index = () => {
     const { idJogo } = useParams();
     const [role, setRole] = useState("")
     const [listaFotos, setListaFotos] = useState([]);
+    const navigate = useNavigate()
 
     const jogoRemover = () => {
-
+        Axios.post("http://localhost:3001/removerJogo", {
+            idJogo: idJogo, nomeFormatado: listaJogos[0].NomeFormatado, fotosLength: listaJogos[0].NumeroImgs, capa: listaJogos[0].Capa
+        }).then((response) => {
+            console.log(response);
+            if (response.data.apagado == "true") {
+                navigate("/Jogos/Index/DataLancamento");
+            }
+        });
     }
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {
+            console.log(response);
             setListaJogos(response.data);
             for (let i = 0; i < response.data[0].NumeroImgs; i++) {
                 setListaFotos(listaFotos => [...listaFotos, response.data[0].NomeFormatado + (i + 1) + ".png"])
@@ -102,13 +112,15 @@ const Index = () => {
                                 <td>
                                     {listaFotos.map((val, key) => {
                                         return (
-                                            <img style={{ float: "left", marginRight: "10px" }} height="150px" src={imagePath + val}></img>
+                                            <img style={{ float: "left", marginRight: "10px", marginBottom: "10px" }} height="150px" src={imagePath + val}></img>
                                         )
                                     })}
                                 </td>
                             </tr>
                             <tr>
-                                <button className="btnRemover" onClick={jogoRemover}>Remover</button>
+                                <td>
+                                    <button className="btnRemover" onClick={jogoRemover}>Remover</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
