@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const fileUpload = require('express-fileupload');
 fs = require('fs');
+fs = require('fs');
 
 const saltRounds = 10;
 
@@ -265,6 +266,37 @@ app.post("/jogoEditar", (req, res) => {
             console.log(err)
         }
         res.send({ editado: "true" })
+    })
+});
+
+  app.post("/removerJogo", (req, res) => {
+    const idJogo = req.body.idJogo
+    const capa = req.body.capa
+    const nomeFormatado = req.body.nomeFormatado
+    const fotosLength = req.body.fotosLength
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function(err) {
+        if (err) {
+          throw err
+        } else {
+          console.log("Successfully deleted the file.")
+        }
+      })
+    let i = 0
+    while (i < fotosLength) {
+        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i+1) + ".png", function(err) {
+            if (err) {
+              throw err
+            } else {
+              console.log("Successfully deleted the file.")
+            }
+          })
+        i++
+    }
+    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({apagado: "true"})
     })
 });
 
