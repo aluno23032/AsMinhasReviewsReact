@@ -241,6 +241,11 @@ app.post("/removerJogo", (req, res) => {
     fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
         if (err) {
             throw err
+<<<<<<< HEAD
+        } else {
+            console.log("Successfully deleted the file.")
+=======
+>>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
         }
     })
     let i = 0
@@ -248,6 +253,11 @@ app.post("/removerJogo", (req, res) => {
         fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
             if (err) {
                 throw err
+<<<<<<< HEAD
+            } else {
+                console.log("Successfully deleted the file.")
+=======
+>>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
             }
         })
         i++
@@ -257,6 +267,8 @@ app.post("/removerJogo", (req, res) => {
             console.log(err)
         }
         res.send({ apagado: "true" })
+<<<<<<< HEAD
+=======
     })
 });
 
@@ -351,10 +363,31 @@ app.post("/removerJogo", (req, res) => {
             console.log(err)
         }
         res.send({ apagado: "true" })
+>>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
     })
 });
 
-app.post("/jogoCriar", (req, res) => {
+app.post("/jogoEditar", (req, res) => {
+    const idJogo = req.body.idJogo
+    const oldCapa = req.body.oldCapa
+    const oldNomeFormatado = req.body.oldNomeFormatado
+    const oldFotosLength = req.body.oldFotosLength
+    let j = 0
+    while (j < oldFotosLength) {
+        fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldNomeFormatado + (j + 1) + ".png", function (err) {
+            if (err) {
+                throw err
+            } else {
+                console.log("File deleted")
+            }
+        })
+        j++
+    }
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldCapa, function (err) {
+        if (err) {
+            throw err
+        }
+    })
     const nome = req.body.nome
     const nomeFormatado = req.body.nome.toLowerCase()
     const capa = nomeFormatado + "." + req.body.capa
@@ -381,6 +414,59 @@ app.post("/jogoCriar", (req, res) => {
         }
     });
     db.query("INSERT INTO Jogos (Nome, NomeFormatado, Capa, Plataformas, Rating, DataLancamento, Descricao, NumeroImgs) VALUES (?,?,?,?,0,?,?,?)", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao, fotosLength], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ criado: "true" })
+    })
+});
+
+app.post("/removerJogo", (req, res) => {
+    const idJogo = req.body.idJogo
+    const capa = req.body.capa
+    const nomeFormatado = req.body.nomeFormatado
+    const fotosLength = req.body.fotosLength
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
+        if (err) {
+            throw err
+        } else {
+            console.log("Successfully deleted the file.")
+        }
+    })
+    let i = 0
+    while (i < fotosLength) {
+        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
+            if (err) {
+                throw err
+            } else {
+                console.log("Successfully deleted the file.")
+            }
+        })
+        i++
+    }
+    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ apagado: "true" })
+    })
+});
+
+app.post("/reviewEditar", (req, res) => {
+    const conteudo = req.body.conteudo
+    const rating = req.body.rating
+    const idReview = req.body.idReview
+    db.query("UPDATE reviews SET Conteudo = ?, Rating = ? WHERE Id = ?", [conteudo, rating, idReview], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ editado: "true" })
+    })
+});
+
+app.post("/atualizarRating", (req, res) => {
+    const jogoId = req.body.jogoId
+    db.query("UPDATE jogos SET Rating = (SELECT avg(rating) FROM reviews WHERE jogo = ?) WHERE Id = ?", [jogoId, jogoId], (err, result) => {
         if (err) {
             console.log(err)
         }

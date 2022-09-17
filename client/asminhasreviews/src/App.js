@@ -16,6 +16,7 @@ import Details from "./Pages/Account/details.js"
 import ChangeEmail from "./Pages/Account/changeEmail.js"
 import ChangePassword from "./Pages/Account/changePassword.js"
 import UsersDetails from "./Pages/Utilizadores/details.js"
+import UsersDetails from "./Pages/Utilizadores/details.js"
 
 function App() {
   return (
