@@ -241,11 +241,6 @@ app.post("/removerJogo", (req, res) => {
     fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
         if (err) {
             throw err
-<<<<<<< HEAD
-        } else {
-            console.log("Successfully deleted the file.")
-=======
->>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
         }
     })
     let i = 0
@@ -253,11 +248,6 @@ app.post("/removerJogo", (req, res) => {
         fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
             if (err) {
                 throw err
-<<<<<<< HEAD
-            } else {
-                console.log("Successfully deleted the file.")
-=======
->>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
             }
         })
         i++
@@ -267,8 +257,6 @@ app.post("/removerJogo", (req, res) => {
             console.log(err)
         }
         res.send({ apagado: "true" })
-<<<<<<< HEAD
-=======
     })
 });
 
@@ -363,7 +351,6 @@ app.post("/removerJogo", (req, res) => {
             console.log(err)
         }
         res.send({ apagado: "true" })
->>>>>>> 7b99f31851321fea071fb2a915eeeaf8ab252009
     })
 });
 
