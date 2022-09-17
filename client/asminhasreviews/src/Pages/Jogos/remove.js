@@ -3,7 +3,7 @@ import Navbar from './../../Components/Navbar/Navbar.js'
 import Footer from "./../../Components/Footer/Footer.js"
 import Axios from "axios"
 import dateFormat from "dateformat"
-import { useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
@@ -37,21 +37,12 @@ const Index = () => {
             }
         });
         Axios.get("http://localhost:3001/login").then((response) => {
-            if (response.data.user[0].RoleId == "a") {
-                setRole("a")
+            if (response.data.user[0].RoleId != "a") {
+                Navigate("/Jogos/Index/Rating")
             }
         })
     }, [])
 
-    if (role != "a") {
-        return (
-            <div style={{ textAlign: "left" }}>
-                <Navbar />
-                <div style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "1300px", marginBottom: "100px" }}><br></br>A remoção de jogos é exclusiva a administradores</div>
-                <Footer />
-            </div>
-        )
-    } else {
         return (
             <div style={{ textAlign: "center" }}>
                 <Navbar />
@@ -67,42 +58,42 @@ const Index = () => {
                                             <b>Nome</b>
                                         </td>
                                         <td style={{ marginBottom: "10px", display: "block" }}>
-                                            {listaJogos[0].Nome}
+                                            {val.Nome}
                                         </td>
                                     </tr><tr>
                                             <td>
                                                 <b>Capa</b>
                                             </td>
                                             <td style={{ marginBottom: "10px", display: "block" }}>
-                                                <img height="175px" src={imagePath + listaJogos[0].Capa}></img>
+                                                <img height="175px" src={imagePath + val.Capa}></img>
                                             </td>
                                         </tr><tr>
                                             <td>
                                                 <b>Plataformas</b>
                                             </td>
                                             <td style={{ marginBottom: "10px", display: "block" }}>
-                                                {listaJogos[0].Plataformas}
+                                                {val.Plataformas}
                                             </td>
                                         </tr><tr>
                                             <td>
                                                 <b>Rating</b>
                                             </td>
                                             <td style={{ marginBottom: "10px", display: "block" }}>
-                                                {listaJogos[0].Rating}
+                                                {val.Rating}
                                             </td>
                                         </tr><tr>
                                             <td>
                                                 <b>Data de Lancamento</b>
                                             </td>
                                             <td style={{ marginBottom: "10px", display: "block" }}>
-                                                {dateFormat(listaJogos[0].DataLancamento, "dd")}/{dateFormat(listaJogos[0].DataLancamento, "mm")}/{dateFormat(listaJogos[0].DataLancamento, "yyyy")}
+                                                {dateFormat(val.DataLancamento, "dd")}/{dateFormat(val.DataLancamento, "mm")}/{dateFormat(val.DataLancamento, "yyyy")}
                                             </td>
                                         </tr><tr>
                                             <td>
                                                 <b>Descrição</b>
                                             </td>
                                             <td style={{ marginBottom: "10px", display: "block" }}>
-                                                {listaJogos[0].Descricao}
+                                                {val.Descricao}
                                             </td>
                                         </tr></>
                                 )
@@ -129,6 +120,5 @@ const Index = () => {
             </div>
         )
     }
-}
 
 export default Index

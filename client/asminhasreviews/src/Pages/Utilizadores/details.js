@@ -14,8 +14,6 @@ const Index = () => {
     const [barra, setBarra] = useState("")
     const [textoRemover, setTextoRemover] = useState("")
     const [listaReviews, setListaReviews] = useState([]);
-    const [role, setRole] = useState("")
-    const [idUser, setIdUser] = useState()
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getReviewsUser", {
@@ -30,9 +28,7 @@ const Index = () => {
             setUsername(response.data[0].Nome)
         });
         Axios.get("http://localhost:3001/login").then((response) => {
-            setRole(response.data.user[0].RoleId)
-            setIdUser(response.data.user[0].Id)
-            if (role === "a" || idUser === idCriador) {
+            if (response.data.user[0].RoleId === "a" || response.data.user[0].Id === idCriador) {
                 setTextoCriar("Criar Review")
                 setTextoEditar("Editar")
                 setTextoRemover("Remover")

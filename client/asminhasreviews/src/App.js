@@ -5,6 +5,7 @@ import Home from "./Pages/home.js"
 import ReviewsCreate from "./Pages/Reviews/create.js"
 import ReviewsEdit from "./Pages/Reviews/edit.js"
 import ReviewsDetails from "./Pages/Reviews/details.js"
+import ReviewsRemove from "./Pages/Reviews/remove.js"
 import JogosIndex from "./Pages/Jogos/index.js"
 import JogosCreate from "./Pages/Jogos/create.js"
 import JogosRemove from "./Pages/Jogos/remove.js"
@@ -32,6 +33,7 @@ function App() {
           <Route path="/Reviews/Create" element={<ReviewsCreate/>}></Route>
           <Route path="/Reviews/Edit/:idReview" element={<ReviewsEdit/>}></Route>
           <Route path="/Reviews/Details/:idReview" element={<ReviewsDetails/>}></Route>
+          <Route path="/Reviews/Remove/:idReview" element={<ReviewsRemove/>}></Route>
           <Route path="/Account/Register" element={<Register/>}></Route>
           <Route path="/Account/Login" element={<Login/>}></Route>
           <Route path="/Account/Details" element={<Details/>}></Route>

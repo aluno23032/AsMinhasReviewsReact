@@ -78,11 +78,11 @@ const EditarReview = () => {
                     <h1>Editar review</h1>
                     <hr />
                     <p className="RegText">Conteúdo</p>
-                    <textarea className="input" type="text" style={{ height: "150px" }} onChange={(e) => { setConteudo(e.target.value) }}></textarea>
+                    <textarea className="input" value={conteudo} type="text" style={{ height: "150px" }} onChange={(e) => { setConteudo(e.target.value) }}></textarea>
                     <p className="RegErro">{conteudoErro}</p>
                     <br />
                     <p className="RegText">Rating</p>
-                    <input className="input" type="number" style={{ height: "50px" }} onChange={(e) => { setRating(e.target.value) }}></input>
+                    <input className="input" type="number" value={rating} style={{ height: "50px" }} onChange={(e) => { setRating(e.target.value) }}></input>
                     <p className="RegErro">{ratingErro}</p>
                     <br />
                     <br />

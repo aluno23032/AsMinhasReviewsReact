@@ -171,7 +171,7 @@ app.get("/getJogo", (req, res) => {
 
 app.get("/getReview", (req, res) => {
     const idReview = req.query.idReview
-    db.query("SELECT *, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome, (SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Id = ?", 
+    db.query("SELECT *,(SELECT Id FROM utilizadores WHERE Id = reviews.Criador) as CriadorId ,(SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome, (SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Id = ?", 
     idReview, (err, result) => {
         if (err) {
             console.log(err);
@@ -472,6 +472,16 @@ app.post("/reviewCriar", (req, res) => {
             console.log(err)
         }
         res.send({ criado: "true" })
+    })
+});
+
+app.post("/removerReview", (req, res) => {
+    const idReview = req.body.idReview
+    db.query("DELETE FROM reviews WHERE Id = ?", idReview, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ apagado: "true" })
     })
 });
 
