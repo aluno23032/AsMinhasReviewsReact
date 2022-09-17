@@ -10,6 +10,10 @@ const Index = () => {
     const [listaJogos, setListaJogos] = useState([]);
     const [imagePath] = useState("/Fotos/");
     const { idJogo } = useParams();
+<<<<<<< HEAD
+=======
+    const [textoCriar, setTextoCriar] = useState("")
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
     const [textoEditar, setTextoEditar] = useState("")
     const [barra, setBarra] = useState("")
     const [textoRemover, setTextoRemover] = useState("")
@@ -32,6 +36,10 @@ const Index = () => {
         });
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
+<<<<<<< HEAD
+=======
+                setTextoCriar("Criar Jogo")
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
                 setTextoEditar("Editar")
                 setTextoRemover("Remover")
                 setBarra(" | ")
@@ -69,7 +77,11 @@ const Index = () => {
                     <h3>Fotografias</h3>
                     {listaFotos.map((val, key) => {
                         return (
+<<<<<<< HEAD
                             <img style={{ width: "23%", height: "168.333333px", float: "left", marginRight: "10px", marginBottom: "10px" }} src={imagePath + val}></img>
+=======
+                            <img style={{ width: "23%", float: "left", marginRight: "10px", marginBottom: "10px" }} src={imagePath + val}></img>
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
                         )
                     })}
                     
@@ -81,7 +93,11 @@ const Index = () => {
                             return (
                                 <tr style={{ borderBottom: "1px solid #dee2e6", verticalAlign: "middle" }}>
                                     <td style={{ padding: "5px" }}>
+<<<<<<< HEAD
                                         <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}><a className="userLink" href={"../../Utilizadores/" + val.Criador}>{val.CriadorNome}</a></div>
+=======
+                                        <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}><a className="userLink" href={"../../Utilizadores/Details/" + val.Criador}>{val.CriadorNome}</a></div>
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
                                         <div style={{ float: "right" }}><h2>{val.Rating.toFixed(0)}<img style={{ marginLeft: "5px", marginBottom: "8px" }} height="25px" src="/favicon.ico "></img></h2></div>
                                         <div style={{ float: "left", width: "90%", textAlign: "left" }}><a style ={{textDecoration: "none"}} href = {"../../Reviews/Details/" + val.Id}><h3 className="conteudoReview">{val.Conteudo}</h3></a></div>
                                         <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}>

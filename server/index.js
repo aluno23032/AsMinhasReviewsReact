@@ -179,6 +179,7 @@ app.get("/getReviewsJogo", (req, res) => {
         }
     });
 });
+<<<<<<< HEAD
 
 app.get("/getReviewsUser", (req, res) => {
     const idUser = req.query.idUser
@@ -190,6 +191,8 @@ app.get("/getReviewsUser", (req, res) => {
         }
     });
 });
+=======
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
 
 app.get("/listajogos", (req, res) => {
     const ordem = req.query.ordem
@@ -201,6 +204,7 @@ app.get("/listajogos", (req, res) => {
                 res.send(result);
             }
         });
+<<<<<<< HEAD
     } else if (ordem === "Nome") {
         db.query("SELECT * FROM jogos ORDER BY Nome ASC", (err, result) => {
             if (err) {
@@ -211,6 +215,9 @@ app.get("/listajogos", (req, res) => {
         });
     }
     else {
+=======
+    } else {
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
         db.query("SELECT * FROM jogos ORDER BY DataLancamento DESC", (err, result) => {
             if (err) {
                 console.log(err);
@@ -220,6 +227,99 @@ app.get("/listajogos", (req, res) => {
         });
     }
 });
+<<<<<<< HEAD
+=======
+
+app.post("/removerJogo", (req, res) => {
+    const idJogo = req.body.idJogo
+    const capa = req.body.capa
+    const nomeFormatado = req.body.nomeFormatado
+    const fotosLength = req.body.fotosLength
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
+        if (err) {
+            throw err
+        }
+    })
+    let i = 0
+    while (i < fotosLength) {
+        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
+            if (err) {
+                throw err
+            }
+        })
+        i++
+    }
+    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ apagado: "true" })
+    })
+});
+
+app.post("/jogoEditar", (req, res) => {
+    const idJogo = req.body.idJogo
+    const oldCapa = req.body.oldCapa
+    const oldNomeFormatado = req.body.oldNomeFormatado
+    const oldFotosLength = req.body.oldFotosLength
+    let j = 0
+        while (j < oldFotosLength) {
+            fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldNomeFormatado + (j + 1) + ".png", function (err) {
+                if (err) {
+                    throw err
+                } else {
+                    console.log("File deleted")
+                }
+            })
+            j++
+        }
+    fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldCapa, function (err) {
+        if (err) {
+            throw err
+        }
+    })
+    const nome = req.body.nome
+    const nomeFormatado = req.body.nome.toLowerCase().replace(/\s/g, '')
+    const capa = nomeFormatado + "." + req.body.capa
+    const plataformas = req.body.plataformas
+    const dataLancamento = req.body.dataLancamento
+    const descricao = req.body.descricao
+    const file = req.files.capaFicheiro
+    const fotos = req.files.fotos
+    const fotosLength = req.body.fotosLength
+    if (fotosLength == 1) {
+        fotos.mv("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + 1 + ".png", err => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+        });
+    } else {
+        let i = 0
+        while (i < fotosLength) {
+            fotos[i].mv("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", err => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send(err);
+                }
+            });
+            i++
+        }
+    }
+    file.mv("./../client/asminhasreviews/public/Fotos/" + capa, err => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+    });
+    db.query("UPDATE jogos SET Nome = ?, NomeFormatado = ?, Capa = ?, Plataformas = ?, DataLancamento = ?, Descricao = ?, NumeroImgs = ? WHERE Id = ?", [nome, nomeFormatado, capa, plataformas, dataLancamento, descricao, fotosLength, idJogo], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ editado: "true" })
+    })
+});
+>>>>>>> 1b41c166c4421c962ed1d143a2aa460283378ee0
 
 app.post("/removerJogo", (req, res) => {
     const idJogo = req.body.idJogo
