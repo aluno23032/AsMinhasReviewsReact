@@ -10,7 +10,7 @@ const Home = () => {
                 <h1 style={{fontSize:"3.5rem", fontWeight:"300"}}>Bem-vindo</h1>
             </div>
             <div>
-                <a href="Jogos">Lista dos melhores jogos</a>
+                <a href="Jogos/Index/Rating">Lista dos melhores jogos</a>
                 <span> | </span>
                 <a href="Reviews/Create">Criar uma review</a>
             </div>
