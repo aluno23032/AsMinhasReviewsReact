@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
-    const [username, setUsername] = useState("")
+    const [userId, setUserId] = useState()
     const [usernameTexto, setUsernameTexto] = useState("")
     const [logoutTexto, setLogoutTexto] = useState("")
     const [registerTexto, setRegisterTexto] = useState("Registar")
@@ -31,7 +31,7 @@ const Navbar = () => {
         Axios.get("http://localhost:3001/login", {
         }).then((response) => {
             if (response.data.auth == true) {
-                setUsername(response.data.user[0].Nome)
+                setUserId(response.data.user[0].Id)
                 setUsernameTexto("Olá " + response.data.user[0].Nome + "!")
                 setLogoutTexto("Logout")
                 setRegisterTexto("")
@@ -70,7 +70,7 @@ const Navbar = () => {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href={"/User/" + username}>
+                        <a className="nav-link" href={"/Utilizadores/" + userId}>
                             {reviewsTexto}
                         </a>
                     </li>

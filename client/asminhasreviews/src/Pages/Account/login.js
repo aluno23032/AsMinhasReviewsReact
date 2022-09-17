@@ -10,7 +10,6 @@ const Login = () => {
     const [usernameStatus, setUsernameStatus] = useState("")
     const [passwordStatus, setPasswordStatus] = useState("")
     const [password, setPassword] = useState("")
-    const [loginStatus, setLoginStatus] = useState(false)
     const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
@@ -21,10 +20,7 @@ const Login = () => {
             setPasswordStatus(response.data.message1)
             setUsernameStatus(response.data.message2)
             if (response.data.auth == true) {
-                setLoginStatus(true)
                 navigate('../..')
-            } else {
-                setLoginStatus(false)
             }
         })
     }
@@ -32,22 +28,11 @@ const Login = () => {
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {
-                setLoginStatus(true)
+                navigate('../..')
             }
         })
     }, [])
 
-    if (loginStatus == true) {
-        return (
-            <div>
-                <Navbar />
-                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
-                <p>O utilizador já fez login.</p>
-                </div>
-                <Footer />
-            </div>
-        )
-    } else {
     return (
         <div>
             <Navbar />
@@ -68,7 +53,7 @@ const Login = () => {
             </div>
             <Footer />
         </div>
-    )}
+    )
 }
 
 export default Login

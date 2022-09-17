@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Navbar from "../../Components/Navbar/Navbar"
 import Footer from "../../Components/Footer/Footer.js"
 import Axios from "axios"
@@ -32,6 +32,14 @@ const Register = () => {
             })
         }
     }
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/login").then((response) => {
+            if (response.data.auth == true) {
+                navigate('../..')
+            }
+        })
+    }, [])
 
     return (
         <div>

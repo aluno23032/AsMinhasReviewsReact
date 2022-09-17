@@ -55,9 +55,6 @@ const CriarJogo = () => {
             for (let i = 0; i < fotos.length; i++) {
                 formData.append("fotos", fotos[i])
             }
-            for (let i = 0; i < fotos.length; i++) {
-                formData.append("fotosExt", fotos[i].type.replace("image/", "").replace("jpeg", "jpg"))
-            }
             Axios.post("http://localhost:3001/jogoCriar", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
