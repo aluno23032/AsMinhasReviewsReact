@@ -157,3 +157,51 @@
 .userLink:hover {
   color: black;
 }
+
+.UpVote {
+  width: 27px;
+  height: 15px;
+  background: url("../public/Votos/noVoteUp.png") no-repeat;
+  display: inline-block;
+}
+
+.UpVote:hover {
+  cursor: pointer;
+  background: url("../public/Votos/upVote.png") no-repeat;
+}
+
+.UpVote2 {
+  width: 27px;
+  height: 15px;
+  background: url("../public/Votos/upVote.png") no-repeat;
+  display: inline-block;
+}
+
+.UpVote2:hover {
+  cursor: pointer;
+  background: url("../public/Votos/noVoteUp.png") no-repeat;
+}
+
+.DownVote {
+  width: 27px;
+  height: 15px;
+  background: url("../public/Votos/noVoteDown.png") no-repeat;
+  display: inline-block;
+}
+
+.DownVote:hover {
+  cursor: pointer;
+  background: url("../public/Votos/downVote.png") no-repeat;
+}
+
+.DownVote2 {
+  width: 27px;
+  height: 15px;
+  background: url("../public/Votos/downVote.png") no-repeat;
+  display: inline-block;
+}
+
+.DownVote2:hover {
+  cursor: pointer;
+  background: url("../public/Votos/noVoteDown.png") no-repeat;
+}
