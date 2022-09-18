@@ -195,7 +195,7 @@ app.get("/getReviewsJogo", (req, res) => {
 app.get("/getReviewsUser", (req, res) => {
     const idCriador = req.query.idCriador
     const userId = req.query.userId
-    db.query("SELECT *,(Select valor FROM reviews.upvotes WHERE IdReview = reviews.Id AND IdUser = ?) AS uservote, (Select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = 1)-(select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = -1) AS upvotes ,(SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Criador = ?", [userId, idCriador], (err, result) => {
+    db.query("SELECT *,(Select valor FROM reviews.upvotes WHERE IdReview = reviews.Id AND IdUser = ?) AS uservote, (Select if (uservote=1,'UpVote2', 'UpVote')) AS upvoteName, (Select if (uservote=-1,'DownVote2', 'DownVote')) AS downvoteName, (Select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = 1)-(select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = -1) AS upvotes ,(SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Criador = ?", [userId, idCriador], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -505,6 +505,41 @@ app.post("/atualizarRating", (req, res) => {
             console.log(err)
         }
         res.send({ criado: "true" })
+    })
+});
+
+app.post("/votoRemover", (req, res) => {
+    const idReview = req.body.idReview
+    const idUser = req.body.idUser
+    db.query("DELETE FROM upvotes WHERE IdReview = ? AND IdUser = ?", [idReview, idUser], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ apagado: "true" })
+    })
+});
+
+app.post("/votoCreate", (req, res) => {
+    const idReview = req.body.idReview
+    const idUser = req.body.idUser
+    const valor = req.body.valor
+    db.query("INSERT INTO upvotes (IdReview, Valor, IdUser) VALUES (?,?,?)", [idReview, valor, idUser], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ criado: "true" })
+    })
+});
+
+app.post("/votoUpdate", (req, res) => {
+    const idReview = req.body.idReview
+    const idUser = req.body.idUser
+    const valor = req.body.valor
+    db.query("UPDATE upvotes SET Valor = ? WHERE IdReview = ? AND IdUser = ?", [valor, idReview, idUser], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send({ atualizado: "true" })
     })
 });
 

@@ -11,20 +11,17 @@ const Navbar = () => {
     const [registerTexto, setRegisterTexto] = useState("Registar")
     const [loginTexto, setLoginTexto] = useState("Login")
     const [reviewsTexto, setReviewsTexto] = useState("")
-    
+
     const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
 
     const logout = () => {
-        navigate('/')
-        Axios.post("http://localhost:3001/logout", {}).then(() => {
-            setLogoutTexto("")
-            setRegisterTexto("Registar")
-            setLoginTexto("Login")
-            setUsernameTexto("")
-            setReviewsTexto("")
-        })
+        Axios.post("http://localhost:3001/logout", {})
+        navigate('/')  
+        setTimeout(function() {
+            window.location.reload(false);
+        }.bind(this),50)   
     }
 
     useEffect(() => {
@@ -37,6 +34,12 @@ const Navbar = () => {
                 setRegisterTexto("")
                 setLoginTexto("")
                 setReviewsTexto("As minhas reviews")
+            } else {
+                setLogoutTexto("")
+                setRegisterTexto("Registar")
+                setLoginTexto("Login")
+                setUsernameTexto("")
+                setReviewsTexto("")
             }
         })
     }, [])
