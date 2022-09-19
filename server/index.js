@@ -171,8 +171,9 @@ app.get("/getJogo", (req, res) => {
 
 app.get("/getReview", (req, res) => {
     const idReview = req.query.idReview
-    db.query("SELECT *, (SELECT Id FROM utilizadores WHERE Id = reviews.Criador) as CriadorId, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome, (SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Id = ?", 
-    [idReview, idReview, idReview], (err, result) => {
+    const userId = req.query.userId
+    db.query("SELECT *,(Select valor FROM reviews.upvotes WHERE IdReview = reviews.Id AND IdUser = ?) AS uservote, (Select if (uservote=1,'UpVote2', 'UpVote')) AS upvoteName, (Select if (uservote=-1,'DownVote2', 'DownVote')) AS downvoteName, (Select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = 1)-(select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = -1) AS upvotes, (SELECT Id FROM utilizadores WHERE Id = reviews.Criador) as CriadorId, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome, (SELECT Nome FROM jogos WHERE Id = reviews.Jogo) as JogoNome FROM reviews WHERE Id = ?", 
+    [userId, idReview, idReview, idReview], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -183,7 +184,8 @@ app.get("/getReview", (req, res) => {
 
 app.get("/getReviewsJogo", (req, res) => {
     const idJogo = req.query.idJogo
-    db.query("SELECT *, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome FROM reviews WHERE Jogo = ?", idJogo, (err, result) => {
+    const userId = req.query.userId
+    db.query("SELECT *,(Select valor FROM reviews.upvotes WHERE IdReview = reviews.Id AND IdUser = ?) AS uservote, (Select if (uservote=1,'UpVote2', 'UpVote')) AS upvoteName, (Select if (uservote=-1,'DownVote2', 'DownVote')) AS downvoteName, (Select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = 1)-(select COUNT(valor) FROM reviews.upvotes WHERE IdReview = reviews.Id AND valor = -1) AS upvotes, (SELECT Nome FROM utilizadores WHERE Id = reviews.Criador) as CriadorNome FROM reviews WHERE Jogo = ?", [userId, idJogo], (err, result) => {
         if (err) {
             console.log(err);
         } else {

@@ -19,7 +19,6 @@ const Index = () => {
     const navigate = useNavigate()
 
     const upvote = ((uservote, idReview, loginId) => () => {
-
         if (loginId) {
             if (uservote == 1) {
                 Axios.post("http://localhost:3001/votoRemover", {
