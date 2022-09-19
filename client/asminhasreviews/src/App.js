@@ -17,6 +17,7 @@ import Details from "./Pages/Account/details.js"
 import ChangeEmail from "./Pages/Account/changeEmail.js"
 import ChangePassword from "./Pages/Account/changePassword.js"
 import UsersDetails from "./Pages/Utilizadores/details.js"
+import AppDetails from "./Pages/detalhes.js"
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/Account/Details" element={<Details/>}></Route>
           <Route path="/Account/Details/Email" element={<ChangeEmail/>}></Route>
           <Route path="/Account/Details/Password" element={<ChangePassword/>}></Route>
+          <Route path="/Detalhes" element={<AppDetails/>}></Route>
         </Routes>
       </Router>
     </div>

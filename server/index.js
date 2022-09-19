@@ -7,7 +7,6 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const fileUpload = require('express-fileupload');
 fs = require('fs');
-fs = require('fs');
 
 const saltRounds = 10;
 

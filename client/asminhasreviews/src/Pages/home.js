@@ -13,6 +13,8 @@ const Home = () => {
                 <a href="Jogos/Index/Rating">Lista dos melhores jogos</a>
                 <span> | </span>
                 <a href="Reviews/Create">Criar uma review</a>
+                <span> | </span>
+                <a href="Detalhes">Detalhes da aplicação</a>
             </div>
             <Footer/>
         </div>

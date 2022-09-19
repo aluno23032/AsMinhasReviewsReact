@@ -11,11 +11,12 @@ const Navbar = () => {
     const [registerTexto, setRegisterTexto] = useState("Registar")
     const [loginTexto, setLoginTexto] = useState("Login")
     const [reviewsTexto, setReviewsTexto] = useState("")
-
     const navigate = useNavigate()
 
+    //Manter cookies
     Axios.defaults.withCredentials = true;
 
+    //Efetua o logout do utilizador
     const logout = () => {
         Axios.post("http://localhost:3001/logout", {})
         navigate('/')  
@@ -25,6 +26,7 @@ const Navbar = () => {
     }
 
     useEffect(() => {
+        //Efetua o login do utilizador com as credenciais
         Axios.get("http://localhost:3001/login", {
         }).then((response) => {
             if (response.data.auth == true) {
