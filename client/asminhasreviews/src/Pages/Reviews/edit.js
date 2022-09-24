@@ -17,7 +17,7 @@ const EditarReview = () => {
     const [idJogo, setIdJogo] = useState()
     
     const navigate = useNavigate()
-
+//Introduçao de uma descrição, rating de uma review existente de um jogo por um utilizador.
     const reviewEditar = () => {
         setConteudoErro("")
         if (conteudo.length < 1) {
@@ -59,7 +59,7 @@ const EditarReview = () => {
             setIdJogo(response.data[0].Jogo)
         });
     }, [])
-
+//Personalização da pagina
     if (role != "a" && idUser != idCriador) {
         return (
             <div>

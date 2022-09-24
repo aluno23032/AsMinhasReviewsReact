@@ -14,7 +14,7 @@ const Index = () => {
     const [jogoNome, setJogoNome] = useState("")
     const [idCriador, setIdCriador] = useState()
     const navigate = useNavigate()
-
+ //Remover review 
     const reviewRemover = () => {
         Axios.post("http://localhost:3001/removerReview", {
             idReview: idReview
@@ -44,7 +44,7 @@ const Index = () => {
             }
         })
     }, [])
-
+//Personalização da pagina
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />

@@ -14,7 +14,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [confirmPasswordStatus, setConfirmPasswordStatus] = useState("")
     const navigate = useNavigate();
-
+//Efetua o registo de um novo utilizador
     const register = () => {
         if (password != confirmPassword) {
             setConfirmPasswordStatus("A palavra-passe não coincide com a confirmação.");

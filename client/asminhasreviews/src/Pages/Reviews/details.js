@@ -20,7 +20,8 @@ const Index = () => {
 
     const upvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
-            if (uservote == 1) {
+            //Remover upvote de uma review
+            if (uservote == 1) {               
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -29,6 +30,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //
             } else if (uservote == -1) {
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
@@ -38,6 +40,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //Remover upvote de uma review
             } else {
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: 1
@@ -64,6 +67,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //Remover downvote de uma review
             } else if (uservote == -1) {
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
@@ -73,6 +77,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //Criar upvote de uma review
             } else {
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: -1

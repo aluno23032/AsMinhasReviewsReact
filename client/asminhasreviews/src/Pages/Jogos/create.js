@@ -4,6 +4,7 @@ import Footer from "../../Components/Footer/Footer.js"
 import Axios from "axios"
 import { useNavigate } from "react-router-dom";
 import dateFormat from "dateformat"
+//Criação da pagina de um jogo.
 
 const CriarJogo = () => {
 
@@ -28,6 +29,7 @@ const CriarJogo = () => {
         setPlataformasErro("")
         setDescricaoErro("")
         setFotosErro("")
+        //Introduçao de nome,capa,plataformas,descriçao e fotos de um novo jogo.
         if (nome.length < 1) {
             setNomeErro("Introduza o nome do jogo")
         } else
@@ -75,18 +77,18 @@ const CriarJogo = () => {
             }
         })
     }, [])
-
+ //Upload de fotos de um novo jogo
     const uploadFotos = event => {
         console.log(event.target.files)
         setFotos(event.target.files)
     }
-
+//Upload de capa de um novo jogo
     const uploadImagem = event => {
         console.log(event.target.files[0])
         setCapa(event.target.files[0].type.replace("image/", "").replace("jpeg", "jpg"))
         setCapaFicheiro(event.target.files[0])
     }
-
+//Personalização da pagina 
     if (role != "a") {
         return (
             <div>

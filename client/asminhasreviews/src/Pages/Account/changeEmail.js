@@ -14,6 +14,7 @@ const Email = () => {
     const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
+    //Efetua a mudança do email de uma conta existente
     const changeEmail = () => {
         if (/\S+@\S+\.\S+/.test(emailNovo)) {
             Axios.post("http://localhost:3001/changeEmail", {

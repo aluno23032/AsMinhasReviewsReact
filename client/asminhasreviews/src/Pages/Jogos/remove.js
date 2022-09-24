@@ -14,7 +14,7 @@ const Index = () => {
     const [role, setRole] = useState("")
     const [listaFotos, setListaFotos] = useState([]);
     const navigate = useNavigate()
-
+//Remover jogo 
     const jogoRemover = () => {
         Axios.post("http://localhost:3001/removerJogo", {
             idJogo: idJogo, nomeFormatado: listaJogos[0].NomeFormatado, fotosLength: listaJogos[0].NumeroImgs, capa: listaJogos[0].Capa

@@ -1,7 +1,7 @@
 import React from "react"
 import Navbar from "./../Components/Navbar/Navbar.js"
 import Footer from "./../Components/Footer/Footer.js"
-
+//Pagina inical e a sua personalização
 const Home = () => {
     return (
         <div>

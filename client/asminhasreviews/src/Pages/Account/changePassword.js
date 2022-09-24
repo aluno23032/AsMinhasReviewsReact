@@ -14,6 +14,7 @@ const ChangePassword = () => {
     const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
+    //Efetua a mudança da password de uma conta existente
     const changePassword = () => {
         if(password != passwordConfirm){
             setErro("A palavra-passe não corresponde à confirmação.")

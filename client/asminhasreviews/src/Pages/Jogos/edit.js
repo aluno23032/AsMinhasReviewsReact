@@ -25,7 +25,7 @@ const EditarJogo = () => {
     const [fotosErro, setFotosErro] = useState("")
     const [oldFotosLength, setOldFotosLength] = useState()
     const navigate = useNavigate()
-
+ //Introduçao de nome,capa,plataformas,descriçao e fotos de um jogo já existente.    
     const jogoEditar = () => {
         setNomeErro("")
         setCapaErro("")
@@ -95,18 +95,18 @@ const EditarJogo = () => {
             }
         })
     }, [])
-
+//Upload de fotos de um jogo já existente
     const uploadFotos = event => {
         console.log(event.target.files)
         setFotos(event.target.files)
     }
-
+//Upload de capa de um jogo já existente
     const uploadImagem = event => {
         console.log(event.target.files[0])
         setCapa(event.target.files[0].type.replace("image/", "").replace("jpeg", "jpg"))
         setCapaFicheiro(event.target.files[0])
     }
-
+//Personalização da pagina
     if (role != "a") {
         return (
             <div>

@@ -22,6 +22,7 @@ const Index = () => {
     const upvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
             if (uservote == 1) {
+                //Remover upvote de um jogo
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -30,6 +31,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //
             } else if (uservote == -1) {
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
@@ -40,6 +42,7 @@ const Index = () => {
                     }
                 })
             } else {
+                //Realizar upvote de um jogo
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -65,6 +68,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+                //Remover downvote de um jogo
             } else if (uservote == -1) {
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
@@ -75,6 +79,7 @@ const Index = () => {
                     }
                 })
             } else {
+                //Realizar downvote de um jogo
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -115,7 +120,7 @@ const Index = () => {
         });
 
     }, [])
-
+//Personalização da pagina
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />

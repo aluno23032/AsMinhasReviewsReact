@@ -13,6 +13,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     Axios.defaults.withCredentials = true;
+    //Efetua o login de um utilizador existente
     const login = () => {
         Axios.post("http://localhost:3001/login", {
             username: username, password: password

@@ -16,7 +16,7 @@ const CriarReview = () => {
     const [idUser, setIdUser] = useState("")
     const [listaJogos, setListaJogos] = useState([]);
     const navigate = useNavigate()
-
+//Introduçao de uma descrição, rating de uma nova review de um jogo por um utilizador.
     const reviewCriar = () => {
         setConteudoErro("")
         if (conteudo.length < 1) {

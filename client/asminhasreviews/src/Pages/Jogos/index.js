@@ -30,7 +30,7 @@ const Index = () => {
             }
         })
     }, [])
-
+//Personalização da pagina
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />
