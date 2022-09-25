@@ -12,23 +12,25 @@ const CriarReview = () => {
     const [jogoId, setJogoId] = useState()
     const [conteudoErro, setConteudoErro] = useState("")
     const [ratingErro, setRatingErro] = useState("")
-    const [role, setRole] = useState("")
     const [idUser, setIdUser] = useState("")
     const [listaJogos, setListaJogos] = useState([]);
     const navigate = useNavigate()
-//Introduçao de uma descrição, rating de uma nova review de um jogo por um utilizador.
+
     const reviewCriar = () => {
         setConteudoErro("")
+        //Verificação do conteúdo da review
         if (conteudo.length < 1) {
             setConteudoErro("Introduza a descrição do jogo")
         } else
             if (rating < 0 || rating > 10 || rating === undefined) {
                 setRatingErro("Introduza um valor válido")
             } else {
+                //Criar a review
                 Axios.post("http://localhost:3001/reviewCriar", {
                     conteudo: conteudo, dataCriacao: dateFormat(new Date(), "yy-mm-dd"), rating: rating, jogoId: jogoId, criador: idUser
                 }).then((response) => {
                     console.log(response);
+                    //Se a criação for válida, mudar para a página com as reviews do utilizador
                     if (response.data.criado == "true") {
                         Axios.post("http://localhost:3001/atualizarRating", {
                             jogoId: jogoId
@@ -38,18 +40,17 @@ const CriarReview = () => {
                 })
             }
     }
-    //Verificar utilizador
+
     useEffect(() => {
+        //Se o utilizador não estiver autenticado, mudar para a página de login
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == false) {
                 navigate("/Account/Login/")
             }
-            if (response.data.user[0].RoleId == "a") {
-                setRole("a")
-            }
             setIdUser(response.data.user[0].Id)
         })
         let ordem = "Nome"
+        //Buscar a lista de jogos
         Axios.get("http://localhost:3001/listajogos", {
             params: { ordem }
         }).then((response) => {

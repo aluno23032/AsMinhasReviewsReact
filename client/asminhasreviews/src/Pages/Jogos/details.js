@@ -19,10 +19,12 @@ const Index = () => {
     const navigate = useNavigate()
     let userId
 
+    //Comportamento ao clicar no botão de "upvote"
     const upvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
+            //Se o utilizador já tiver dado "upvote"...
             if (uservote == 1) {
-                //Remover upvote de um jogo
+                //Remover o "upvote" da review
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -31,8 +33,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Update de upvote de um jogo
+            //Se o utilizador tiver dado "downvote"...
             } else if (uservote == -1) {
+                //Mudar o valor do "upvote" da review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -41,8 +44,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+            //Se o utilizador não tiver nenhum voto...
             } else {
-                //Realizar upvote de um jogo
+                //Adicionar "upvote" da review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -52,14 +56,19 @@ const Index = () => {
                     }
                 })
             }
+            //Se o utilizador não estiver autenticado...
         } else {
+            //Mudar para a página de login
             navigate("/Account/Login")
         }
     })
-    //Update de downvote de uma review
+
+    //Comportamento ao clicar no botão de "downvote"
     const downvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
+            //Se o utilizador tiver dado "upvote"...
             if (uservote == 1) {
+                //Mudar o valor do "downvote" da review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -68,8 +77,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Remover downvote de um jogo
+            //Se o utilizador já tiver dado "downvote"...
             } else if (uservote == -1) {
+                //Remover o "downvote" da review
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -78,8 +88,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
+            //Se o utilizador não tiver nenhum voto
             } else {
-                //Realizar downvote de um jogo
+                //Adicionar "downvote" da review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -89,12 +100,15 @@ const Index = () => {
                     }
                 })
             }
+            //Se o utilizador não estiver autenticado...
         } else {
+            //Mudar para a página de login
             navigate("/Account/Login")
         }
     })
-    //Verificar utilizador
+
     useEffect(() => {
+        //Se o utilizador for administrador, mostrar hiperligações para editar e remover o jogo
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
                 setTextoEditar("Editar")
@@ -103,14 +117,14 @@ const Index = () => {
             }
             setIdUser(response.data.user[0].Id)
             userId = response.data.user[0].Id
-            //Verificar review de um jogo
+            //Buscar as reviews associadas ao jogo
             Axios.get("http://localhost:3001/getReviewsJogo", {
                 params: { idJogo, userId }
             }).then((response) => {
                 setListaReviews(response.data);
             });
         })
-        //Verificar jogo
+        //Buscar as informações do jogo
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {
@@ -121,7 +135,7 @@ const Index = () => {
         });
 
     }, [])
-//Personalização da pagina
+
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />

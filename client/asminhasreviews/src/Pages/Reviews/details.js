@@ -18,10 +18,12 @@ const Index = () => {
     const navigate = useNavigate()
     let userId
 
+    //Comportamento ao clicar no botão de "upvote"
     const upvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
-            //Remover upvote de uma review
-            if (uservote == 1) {               
+            //Se o utilizador já tiver dado "upvote"...
+            if (uservote == 1) {      
+                //Remover o "upvote" da review         
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -30,8 +32,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Update de upvote de uma review
+            //Se o utilizador tiver dado "downvote"...
             } else if (uservote == -1) {
+                //Mudar o valor do "upvote" da review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -40,8 +43,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Remover upvote de uma review
+            //Se o utilizador não tiver nenhum voto...
             } else {
+                //Adicionar "upvote" da review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -51,14 +55,19 @@ const Index = () => {
                     }
                 })
             }
+            //Se o utilizador não estiver autenticado...
         } else {
+            //Mudar para a página de login
             navigate("/Account/Login")
         }
     })
-    //Update de downvote de um jogo
+
+    //Comportamento ao clicar no botão de "downvote"
     const downvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
+            //Se o utilizador tiver dado "upvote"...
             if (uservote == 1) {
+                //Mudar o valor do "downvote" da review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -67,8 +76,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Remover downvote de uma review
+            //Se o utilizador já tiver dado "downvote"...
             } else if (uservote == -1) {
+                //Remover o "downvote" da review
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -77,8 +87,9 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //Criar upvote de uma review
+            //Se o utilizador não tiver nenhum voto
             } else {
+                //Adicionar "downvote" da review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -88,12 +99,15 @@ const Index = () => {
                     }
                 })
             }
+            //Se o utilizador não estiver autenticado...
         } else {
+            //Mudar para a página de login
             navigate("/Account/Login")
         }
     })
-    //Verificar utilizador
+
     useEffect(() => {
+        //Se o utilizador não for o criador da review e não for administrador, mostrar hiperligações para editar e remover o jogo
         Axios.get("http://localhost:3001/login").then((response) => {
             setRole(response.data.user[0].RoleId)
             setIdUser(response.data.user[0].Id)
@@ -102,8 +116,8 @@ const Index = () => {
                 setTextoRemover("Remover")
                 setBarra(" | ")
             }
-            //Verificar review de um jogo
             userId = response.data.user[0].Id
+            //Buscar as informações da review
             Axios.get("http://localhost:3001/getReview", {
             params: { idReview, userId }
         }).then((response) => {

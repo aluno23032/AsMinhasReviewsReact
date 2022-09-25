@@ -16,9 +16,10 @@ const Navbar = () => {
     //Manter cookies
     Axios.defaults.withCredentials = true;
 
-    //Efetua o logout do utilizador
     const logout = () => {
+        //Efetua o logout do utilizador
         Axios.post("http://localhost:3001/logout", {})
+        //Mudar para a página principal
         navigate('/')  
         setTimeout(function() {
             window.location.reload(false);
@@ -26,9 +27,9 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        //Efetua o login do utilizador com as credenciais
         Axios.get("http://localhost:3001/login", {
         }).then((response) => {
+            //Se o utilizador estiver autenticado, alterar o conteúdo da barra de navegação
             if (response.data.auth == true) {
                 setUserId(response.data.user[0].Id)
                 setUsernameTexto("Olá " + response.data.user[0].Nome + "!")
@@ -45,6 +46,7 @@ const Navbar = () => {
             }
         })
     }, [])
+    //Criação e personalização da barra de navegação da app
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ borderBottom: "1px solid #dee2e6" }}>

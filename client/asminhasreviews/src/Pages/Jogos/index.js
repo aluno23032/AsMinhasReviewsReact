@@ -16,12 +16,13 @@ const Index = () => {
     const [textoRemover, setTextoRemover] = useState("")
 
     useEffect(() => {
+        //Buscar todos os jogos
         Axios.get("http://localhost:3001/listajogos", {
             params: { ordem }
         }).then((response) => {
             setListaJogos(response.data);
         });
-        //Verificar utilizador
+        //Se o utilizador for administrador, mostrar hiperligações para criar, editar e remover o jogo
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
                 setTextoCriar("Criar Jogo")
@@ -31,7 +32,7 @@ const Index = () => {
             }
         })
     }, [])
-//Personalização da pagina
+
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />

@@ -14,12 +14,14 @@ const Index = () => {
     const [jogoNome, setJogoNome] = useState("")
     const [idCriador, setIdCriador] = useState()
     const navigate = useNavigate()
- //Remover review 
+    
     const reviewRemover = () => {
+        //Remover review
         Axios.post("http://localhost:3001/removerReview", {
             idReview: idReview
         }).then((response) => {
             console.log(response);
+            //Se a remoção for válida, mudar para a página com as reviews do utilizador
             if (response.data.apagado == "true") {
                 Axios.post("http://localhost:3001/atualizarRating", {
                             jogoNome: jogoNome
@@ -28,8 +30,9 @@ const Index = () => {
             }
         });
     }
-    //Verificar review de um jogo
+
     useEffect(() => {
+        //Buscar informação da review
         Axios.get("http://localhost:3001/getReview", {
             params: { idReview }
         }).then((response) => {
@@ -38,14 +41,18 @@ const Index = () => {
             setJogoNome(response.data[0].JogoNome)
             setIdCriador(response.data[0].CriadorId)
         });
-        //Verificar utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
+            //Se o utilizador não estiver autenticado, mudar para a página de login    
+            if (response.data.auth == false) {
+                navigate("/Account/Login/")
+            }
+            //Se o utilizador não for o criador da review e não for administrador, mudar para a página de reviews do criador
             if (response.data.user[0].RoleId != "a" && response.data.user[0].Nome != nomeCriador) {
                 navigate("/Utilizadores/" + response.data[0].CriadorId)
             }
         })
     }, [])
-//Personalização da pagina
+
     return (
         <div style={{ textAlign: "center" }}>
             <Navbar />

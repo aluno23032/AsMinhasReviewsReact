@@ -12,7 +12,9 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
+    //Manter cookies
     Axios.defaults.withCredentials = true;
+
     //Efetua o login de um utilizador existente
     const login = () => {
         Axios.post("http://localhost:3001/login", {
@@ -20,16 +22,18 @@ const Login = () => {
         }).then((response) => {
             setPasswordStatus(response.data.message1)
             setUsernameStatus(response.data.message2)
+            //Se o login for válido, redirecionar para página principal
             if (response.data.auth == true) {
-                navigate('../..')
+                navigate('/')
             }
         })
     }
 
     useEffect(() => {
+        //Se o utilizador já estiver autenticado, mudar para a página principal
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {
-                navigate('../..')
+                navigate('/')
             }
         })
     }, [])

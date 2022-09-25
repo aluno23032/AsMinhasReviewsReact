@@ -10,23 +10,25 @@ const Index = () => {
 
     const [listaJogos, setListaJogos] = useState([]);
     const [imagePath] = useState("/Fotos/");
-    const { idJogo } = useParams();
-    const [role, setRole] = useState("")
+    const { idJogo } = useParams()
     const [listaFotos, setListaFotos] = useState([]);
     const navigate = useNavigate()
-//Remover jogo 
+
     const jogoRemover = () => {
+        //Remover o jogo
         Axios.post("http://localhost:3001/removerJogo", {
             idJogo: idJogo, nomeFormatado: listaJogos[0].NomeFormatado, fotosLength: listaJogos[0].NumeroImgs, capa: listaJogos[0].Capa
         }).then((response) => {
             console.log(response);
+            //Se a remoção for válida, mudar para a página com os jogos mais recentes
             if (response.data.apagado == "true") {
                 navigate("/Jogos/Index/DataLancamento");
             }
         });
     }
-    //Verificar jogo
+
     useEffect(() => {
+        //Buscar as informações do jogo
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {
@@ -36,10 +38,13 @@ const Index = () => {
                 setListaFotos(listaFotos => [...listaFotos, response.data[0].NomeFormatado + (i + 1) + ".png"])
             }
         });
-        //Verificar utilizador
+        //Verificar "role" do utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId != "a") {
-                Navigate("/Jogos/Index/Rating")
+                Navigate("/Jogos/Index/DataLancamento")
+            //Se o utilizador não for administrador, mudar para a página com os jogos mais recentes
+            } else {
+                navigate("/")
             }
         })
     }, [])

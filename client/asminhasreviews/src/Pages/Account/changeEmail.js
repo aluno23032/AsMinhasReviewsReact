@@ -10,11 +10,12 @@ const Email = () => {
     const [emailNovo, setEmailNovo] = useState("")
     const [erro, setErro] = useState("")
     const [confirm, setConfirm] = useState("")
-    const [loginStatus, setLoginStatus] = useState(false)
     const navigate = useNavigate()
 
+    //Manter cookies
     Axios.defaults.withCredentials = true;
-    //Efetua a mudança do email de uma conta existente
+
+    //Efetua a mudança do email da conta autenticada
     const changeEmail = () => {
         if (/\S+@\S+\.\S+/.test(emailNovo)) {
             Axios.post("http://localhost:3001/changeEmail", {
@@ -29,33 +30,26 @@ const Email = () => {
     }
 
     const username = () => {
+        //Mudar para a página de mudança de nome de utilizador
         navigate('/Account/Details')
     }
 
     const password = () => {
+        //Mudar para a página de mudança de palavra-passe
         navigate('/Account/Details/Password')
     }
-     //Verificar utilizador
+
     useEffect(() => {
+        //Se o utilizador não estiver autenticado, mudar para a página principal
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {
-                setLoginStatus(true)
                 setEmail(response.data.user[0].Email)
+            } else {
+                navigate('/')
             }
         })
     }, [])
 
-    if (loginStatus == false) {
-        return (
-            <div>
-                <Navbar />
-                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
-                    <p>O utilizador não está autenticado.</p>
-                </div>
-                <Footer />
-            </div>
-        )
-    } else {
         return (
             <div>
                 <Navbar />
@@ -84,6 +78,5 @@ const Email = () => {
             </div>
         )
     }
-}
 
 export default Email

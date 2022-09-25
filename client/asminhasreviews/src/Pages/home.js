@@ -1,7 +1,7 @@
 import React from "react"
 import Navbar from "./../Components/Navbar/Navbar.js"
 import Footer from "./../Components/Footer/Footer.js"
-//Pagina inical e a sua personalização
+//Criação da página inical
 const Home = () => {
     return (
         <div>
@@ -12,8 +12,7 @@ const Home = () => {
             <div>
                 <a href="Jogos/Index/Rating">Lista dos melhores jogos</a>
                 <span> | </span>
-                <a href="Reviews/Create">Criar uma review</a>
-                <span> | </span>
+                <a href="Reviews/Create">Criar uma review</a><br/>
                 <a href="Detalhes">Detalhes da aplicação</a>
             </div>
             <Footer/>

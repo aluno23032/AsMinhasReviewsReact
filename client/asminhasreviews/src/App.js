@@ -19,6 +19,7 @@ import ChangePassword from "./Pages/Account/changePassword.js"
 import UsersDetails from "./Pages/Utilizadores/details.js"
 import AppDetails from "./Pages/detalhes.js"
 
+//Rotas da aplicação
 function App() {
   return (
     <div className="App">

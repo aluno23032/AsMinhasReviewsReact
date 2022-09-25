@@ -9,8 +9,8 @@ const fileUpload = require('express-fileupload');
 fs = require('fs');
 
 const saltRounds = 10;
-
 const app = express();
+
 app.use(fileUpload());
 app.use(express.json());
 app.use(cors({
@@ -18,10 +18,8 @@ app.use(cors({
     methods: ["GET", "POST"],
     credentials: true
 }));
-
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use(session({
     key: "userId",
     secret: "topsecret",
@@ -38,6 +36,7 @@ const db = mysql.createConnection({
     password: "root",
     database: "reviews"
 })
+
 //Registar utilizador na base de dados
 app.post("/register", (req, res) => {
     const username = req.body.username
@@ -68,7 +67,8 @@ app.post("/register", (req, res) => {
         })
     })
 })
-//Efetuar login
+
+//Devolver dados sobre o utilizador autenticado
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({ auth: true, user: req.session.user })
@@ -77,6 +77,7 @@ app.get("/login", (req, res) => {
     }
 })
 
+//Retornar nome do utilizador autenticado
 app.get("/getUsername", (req, res) => {
     idUser = req.query.idCriador
     db.query("SELECT Nome FROM Utilizadores WHERE Id = ?;", idUser, (err, result) => {
@@ -87,13 +88,15 @@ app.get("/getUsername", (req, res) => {
         }
     })
 })
-//Efetuar logout
+
+//Efetuar logout do utilizador autenticado
 app.post("/logout", (req, res) => {
     res.send({ auth: false })
     req.session.destroy();
 })
 
-app.post("/details", (req, res) => {
+//Editar nome do utilizador autenticado
+app.post("/changeUsername", (req, res) => {
     const username = req.body.username
     const usernameNovo = req.body.usernameNovo
     db.query("UPDATE Utilizadores SET Nome = ? WHERE Nome = ?;", [usernameNovo, username], (err, result) => {
@@ -106,7 +109,8 @@ app.post("/details", (req, res) => {
         }
     })
 })
-//Efetuar mudança de Email na base de dados
+
+//Efetuar mudança do email do utilizador autenticado
 app.post("/changeEmail", (req, res) => {
     const email = req.body.email
     const emailNovo = req.body.emailNovo
@@ -119,7 +123,8 @@ app.post("/changeEmail", (req, res) => {
         }
     })
 })
-//Efetuar mudança de Password na base de dados
+
+//Efetuar mudança de palavra-passe do utilizador autenticado
 app.post("/changePassword", (req, res) => {
     const password = req.body.password
     bcrypt.hash(password, saltRounds, (hash) => {
@@ -133,7 +138,8 @@ app.post("/changePassword", (req, res) => {
         })
     })
 })
-//Login nao efetuadp com sucesso
+
+//Autenticar o utilizador
 app.post("/login", (req, res) => {
     const username = req.body.username
     const password = req.body.password
@@ -157,6 +163,7 @@ app.post("/login", (req, res) => {
 }
 )
 
+//Devolver informações de um jogo
 app.get("/getJogo", (req, res) => {
     const idJogo = req.query.idJogo
     db.query("SELECT * FROM jogos WHERE Id = ?", idJogo, (err, result) => {
@@ -168,6 +175,7 @@ app.get("/getJogo", (req, res) => {
     });
 });
 
+//Devolver informações de uma review
 app.get("/getReview", (req, res) => {
     const idReview = req.query.idReview
     const userId = req.query.userId
@@ -181,6 +189,7 @@ app.get("/getReview", (req, res) => {
     });
 });
 
+//Devolver informações de uma review e do respetivo jogo 
 app.get("/getReviewsJogo", (req, res) => {
     const idJogo = req.query.idJogo
     const userId = req.query.userId
@@ -193,6 +202,7 @@ app.get("/getReviewsJogo", (req, res) => {
     });
 });
 
+//Devolver informações de uma review e do respetivo utilizador
 app.get("/getReviewsUser", (req, res) => {
     const idCriador = req.query.idCriador
     const userId = req.query.userId
@@ -205,6 +215,7 @@ app.get("/getReviewsUser", (req, res) => {
     });
 });
 
+//Devolver lista dos jogos
 app.get("/listajogos", (req, res) => {
     const ordem = req.query.ordem
     if (ordem == "Rating") {
@@ -234,7 +245,8 @@ app.get("/listajogos", (req, res) => {
         });
     }
 });
-//Remoçao de jogo da base de dados sem sucesso
+
+//Remoção de um jogo da base de dados
 app.post("/removerJogo", (req, res) => {
     const idJogo = req.body.idJogo
     const capa = req.body.capa
@@ -262,6 +274,7 @@ app.post("/removerJogo", (req, res) => {
     })
 });
 
+//Edição de um jogo na base de dados
 app.post("/jogoEditar", (req, res) => {
     const idJogo = req.body.idJogo
     const oldCapa = req.body.oldCapa
@@ -324,59 +337,9 @@ app.post("/jogoEditar", (req, res) => {
         res.send({ editado: "true" })
     })
 });
-//Remoçao de jogo da base de dados com sucesso
-app.post("/removerJogo", (req, res) => {
-    const idJogo = req.body.idJogo
-    const capa = req.body.capa
-    const nomeFormatado = req.body.nomeFormatado
-    const fotosLength = req.body.fotosLength
-    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
-        if (err) {
-            throw err
-        } else {
-            console.log("Successfully deleted the file.")
-        }
-    })
-    let i = 0
-    while (i < fotosLength) {
-        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
-            if (err) {
-                throw err
-            } else {
-                console.log("Successfully deleted the file.")
-            }
-        })
-        i++
-    }
-    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        res.send({ apagado: "true" })
-    })
-});
 
-app.post("/jogoEditar", (req, res) => {
-    const idJogo = req.body.idJogo
-    const oldCapa = req.body.oldCapa
-    const oldNomeFormatado = req.body.oldNomeFormatado
-    const oldFotosLength = req.body.oldFotosLength
-    let j = 0
-    while (j < oldFotosLength) {
-        fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldNomeFormatado + (j + 1) + ".png", function (err) {
-            if (err) {
-                throw err
-            } else {
-                console.log("File deleted")
-            }
-        })
-        j++
-    }
-    fs.unlink("./../client/asminhasreviews/public/Fotos/" + oldCapa, function (err) {
-        if (err) {
-            throw err
-        }
-    })
+//Criação de um jogo na base de dados
+app.post("/jogoCriar", (req, res) => {
     const nome = req.body.nome
     const nomeFormatado = req.body.nome.toLowerCase()
     const capa = nomeFormatado + "." + req.body.capa
@@ -410,37 +373,7 @@ app.post("/jogoEditar", (req, res) => {
     })
 });
 
-app.post("/removerJogo", (req, res) => {
-    const idJogo = req.body.idJogo
-    const capa = req.body.capa
-    const nomeFormatado = req.body.nomeFormatado
-    const fotosLength = req.body.fotosLength
-    fs.unlink("./../client/asminhasreviews/public/Fotos/" + capa, function (err) {
-        if (err) {
-            throw err
-        } else {
-            console.log("Successfully deleted the file.")
-        }
-    })
-    let i = 0
-    while (i < fotosLength) {
-        fs.unlink("./../client/asminhasreviews/public/Fotos/" + nomeFormatado + (i + 1) + ".png", function (err) {
-            if (err) {
-                throw err
-            } else {
-                console.log("Successfully deleted the file.")
-            }
-        })
-        i++
-    }
-    db.query("DELETE FROM Jogos WHERE Id = ?", idJogo, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        res.send({ apagado: "true" })
-    })
-});
-
+//Edição de uma review na base de dados
 app.post("/reviewEditar", (req, res) => {
     const conteudo = req.body.conteudo
     const rating = req.body.rating
@@ -453,6 +386,7 @@ app.post("/reviewEditar", (req, res) => {
     })
 });
 
+//Recalcular rating de um jogo
 app.post("/atualizarRating", (req, res) => {
     const jogoId = req.body.jogoId
     db.query("UPDATE jogos SET Rating = (SELECT avg(rating) FROM reviews WHERE jogo = ?) WHERE Id = ?", [jogoId, jogoId], (err, result) => {
@@ -463,6 +397,7 @@ app.post("/atualizarRating", (req, res) => {
     })
 });
 
+//Criação de uma review na base de dados
 app.post("/reviewCriar", (req, res) => {
     const conteudo = req.body.conteudo
     const dataCriacao = req.body.dataCriacao
@@ -477,6 +412,7 @@ app.post("/reviewCriar", (req, res) => {
     })
 });
 
+//Remoção de uma review na base de dados
 app.post("/removerReview", (req, res) => {
     const idReview = req.body.idReview
     db.query("DELETE FROM reviews WHERE Id = ?", idReview, (err, result) => {
@@ -487,28 +423,7 @@ app.post("/removerReview", (req, res) => {
     })
 });
 
-app.post("/reviewEditar", (req, res) => {
-    const conteudo = req.body.conteudo
-    const rating = req.body.rating
-    const idReview = req.body.idReview
-    db.query("UPDATE reviews SET Conteudo = ?, Rating = ? WHERE Id = ?", [conteudo, rating, idReview], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        res.send({ editado: "true" })
-    })
-});
-
-app.post("/atualizarRating", (req, res) => {
-    const jogoId = req.body.jogoId
-    db.query("UPDATE jogos SET Rating = (SELECT avg(rating) FROM reviews WHERE jogo = ?) WHERE Id = ?", [jogoId, jogoId], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        res.send({ criado: "true" })
-    })
-});
-
+//Remoção de um upvote ou downvote
 app.post("/votoRemover", (req, res) => {
     const idReview = req.body.idReview
     const idUser = req.body.idUser
@@ -520,6 +435,7 @@ app.post("/votoRemover", (req, res) => {
     })
 });
 
+//Criação de um upvote ou downvote
 app.post("/votoCreate", (req, res) => {
     const idReview = req.body.idReview
     const idUser = req.body.idUser
@@ -532,6 +448,7 @@ app.post("/votoCreate", (req, res) => {
     })
 });
 
+//Atualização de um upvote ou downvote
 app.post("/votoUpdate", (req, res) => {
     const idReview = req.body.idReview
     const idUser = req.body.idUser

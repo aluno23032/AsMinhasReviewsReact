@@ -1,7 +1,8 @@
 import React from "react"
 import Navbar from "./../Components/Navbar/Navbar.js"
 import Footer from "./../Components/Footer/Footer.js"
-//Pagina de detalhes e a sua personalização
+
+//Criação pagina de detalhes
 const Home = () => {
     return (
         <div>

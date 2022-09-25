@@ -1,5 +1,5 @@
 import React from "react"
-//Criação e personalização do rodapé da app
+//Criação do rodapé da app
 const Footer = () => {
     return (
         <div style={{

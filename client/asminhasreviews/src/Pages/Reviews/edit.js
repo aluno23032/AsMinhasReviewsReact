@@ -11,25 +11,27 @@ const EditarReview = () => {
     const { idReview } = useParams();
     const [conteudoErro, setConteudoErro] = useState("")
     const [ratingErro, setRatingErro] = useState("")
-    const [role, setRole] = useState("")
     const [idUser, setIdUser] = useState()
-    const [idCriador, setIdCriador] = useState()
     const [idJogo, setIdJogo] = useState()
+    const [nomeCriador, setNomeCriador] = useState()
     
     const navigate = useNavigate()
-//Introduçao de uma descrição, rating de uma review existente de um jogo por um utilizador.
+
     const reviewEditar = () => {
         setConteudoErro("")
+        //Verificação do conteúdo da review
         if (conteudo.length < 1) {
             setConteudoErro("Introduza a descrição do jogo")
         } else
             if (rating < 0 || rating > 10 || rating === undefined) {
                 setRatingErro("Introduza um valor válido")
             } else {
+                //Editar a review
                 Axios.post("http://localhost:3001/reviewEditar", {
                     idReview: idReview, conteudo: conteudo, rating: rating
                 }).then((response) => {
                     console.log(response);
+                    //Se a edição for válida, mudar para a página com as reviews do utilizador
                     if (response.data.editado == "true") {
                         Axios.post("http://localhost:3001/atualizarRating", {
                             jogoId: idJogo
@@ -39,39 +41,30 @@ const EditarReview = () => {
                 })
             }
     }
-    //Verificar utilizador
+
     useEffect(() => {
-        Axios.get("http://localhost:3001/login").then((response) => {
-            if (response.data.auth == false) {
-                navigate("/Account/Login/")
-            }
-            if (response.data.user[0].RoleId == "a") {
-                setRole("a")
-            }
-            setIdUser(response.data.user[0].Id)
-        })
-        //Verificar review de um jogo
+        //Buscar informação da review
         Axios.get("http://localhost:3001/getReview", {
             params: { idReview }
         }).then((response) => {
             setConteudo(response.data[0].Conteudo);
             setRating(response.data[0].Rating);
-            setIdCriador(response.data[0].Criador)
             setIdJogo(response.data[0].Jogo)
+            setNomeCriador(response.data[0].CriadorNome)
         });
+        Axios.get("http://localhost:3001/login").then((response) => {
+            //Se o utilizador não estiver autenticado, mudar para a página de login    
+            if (response.data.auth == false) {
+                navigate("/Account/Login/")
+            }
+            //Se o utilizador não for o criador da review e não for administrador, mudar para a página de reviews do criador
+            if (response.data.user[0].RoleId != "a" && response.data.user[0].Nome != nomeCriador) {
+                navigate("/Utilizadores/" + response.data[0].CriadorId)
+            }
+            setIdUser(response.data.user[0].Id)
+        })
     }, [])
-//Personalização da pagina
-    if (role != "a" && idUser != idCriador) {
-        return (
-            <div>
-                <Navbar />
-                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left", width: "1300px" }}>
-                    A edição de uma review é exclusiva ao seu criador.
-                </div>
-                <Footer />
-            </div>
-        )
-    } else {
+
         return (
             <div>
                 <Navbar />
@@ -93,6 +86,5 @@ const EditarReview = () => {
             </div>
         )
     }
-}
 
 export default EditarReview

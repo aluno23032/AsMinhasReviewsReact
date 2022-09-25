@@ -13,79 +13,77 @@ const ChangePassword = () => {
     const [loginStatus, setLoginStatus] = useState(false)
     const navigate = useNavigate()
 
+    //Manter cookies
     Axios.defaults.withCredentials = true;
-    //Efetua a mudança da password de uma conta existente
+
+    //Efetua a mudança da password da conta autenticada
     const changePassword = () => {
-        if(password != passwordConfirm){
+        //Confirmar se a palavra-passe é válida
+        if (password != passwordConfirm) {
             setErro("A palavra-passe não corresponde à confirmação.")
-        } else if (password.length>8 && password.length<32) {
+        } else if (password.length > 8 && password.length < 32) {
             setErro("Por favor introduza uma palavra-passe entre 8 e 32 caracteres.")
         } else {
-        Axios.post("http://localhost:3001/details", {
-            password: password
-        }).then((response) => {
-            setErro(response.data.erro)
-            setConfirm(response.data.confirm)
-        })}
+            //Alterar a palavra-passe
+            Axios.post("http://localhost:3001/changePassword", {
+                password: password
+            }).then((response) => {
+                setErro(response.data.erro)
+                setConfirm(response.data.confirm)
+            })
+        }
     }
 
     const email = () => {
+        //Mudar para a página de mudança de email
         navigate('/Account/Details/Email')
     }
 
     const details = () => {
+        //Mudar para a página de mudança de nome de utilizador
         navigate('/Account/Details')
     }
-     //Verificar utilizador
+
     useEffect(() => {
+        //Se o utilizador não estiver autenticado, mudar para a página principal
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {
                 setLoginStatus(true)
+            } else {
+                navigate("/")
             }
         })
     }, [])
 
-    if (loginStatus == false) {
-        return (
-            <div>
-                <Navbar />
-                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
-                    <p>O utilizador não está autenticado.</p>
-                </div>
-                <Footer />
-            </div>
-        )
-    } else {
-        return (
-            <div>
-                <Navbar />
-                <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
-                    <h1>Gerir utilizador</h1>
-                    <hr />
-                    <div style={{ display: "flex" }}>
-                        <div style={{marginRight:"24px"}}>
+    return (
+        <div>
+            <Navbar />
+            <div style={{ marginTop: "10px", float: "left", marginLeft: "16%", textAlign: "left" }}>
+                <h1>Gerir utilizador</h1>
+                <hr />
+                <div style={{ display: "flex" }}>
+                    <div style={{ marginRight: "24px" }}>
                         <button onClick={details} className="detailsButtonSec">Nome de utilizador</button>
-                        <br/>
+                        <br />
                         <button onClick={email} className="detailsButtonSec">Email</button>
-                        <br/>
+                        <br />
                         <button className="detailsButton">Palavra-passe</button>
-                        </div>
-                        <div>
-                            <p className="RegText">Palavra-passe</p>
-                            <input className="input" type="password" onChange={(e) => { setPassword(e.target.value) }}></input>
-                            <p className="RegText">Confirmar palavra-passe</p>
-                            <input className="input" type="password" onChange={(e) => { setPasswordConfirm(e.target.value) }}></input>
-                            <p className="Confirm">{confirm}</p>
-                            <p className="RegErro">{erro}</p>
-                            <br />
-                            <button onClick={changePassword} className="mainButton">Alterar palavra-passe</button>
-                        </div>
+                    </div>
+                    <div>
+                        <p className="RegText">Palavra-passe</p>
+                        <input className="input" type="password" onChange={(e) => { setPassword(e.target.value) }}></input>
+                        <p className="RegText">Confirmar palavra-passe</p>
+                        <input className="input" type="password" onChange={(e) => { setPasswordConfirm(e.target.value) }}></input>
+                        <p className="Confirm">{confirm}</p>
+                        <p className="RegErro">{erro}</p>
+                        <br />
+                        <button onClick={changePassword} className="mainButton">Alterar palavra-passe</button>
                     </div>
                 </div>
-                <Footer />
             </div>
-        )
-    }
+            <Footer />
+        </div>
+    )
 }
 
 export default ChangePassword
