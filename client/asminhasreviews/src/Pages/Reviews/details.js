@@ -107,7 +107,7 @@ const Index = () => {
     })
 
     useEffect(() => {
-        //Se o utilizador não for o criador da review e não for administrador, mostrar hiperligações para editar e remover o jogo
+        //Se o utilizador for o criador da review ou se for administrador, mostrar hiperligações para editar e remover o jogo
         Axios.get("http://localhost:3001/login").then((response) => {
             setRole(response.data.user[0].RoleId)
             setIdUser(response.data.user[0].Id)
