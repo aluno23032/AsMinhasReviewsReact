@@ -21,6 +21,7 @@ const Index = () => {
         }).then((response) => {
             setListaJogos(response.data);
         });
+        //Verificar utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
                 setTextoCriar("Criar Jogo")

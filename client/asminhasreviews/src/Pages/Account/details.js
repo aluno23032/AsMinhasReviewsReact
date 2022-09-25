@@ -12,7 +12,7 @@ const Details = () => {
     const [confirm, setConfirm] = useState("")
     const [loginStatus, setLoginStatus] = useState(false)
     const navigate = useNavigate()
-
+     //Efetua mudança de Username
     Axios.defaults.withCredentials = true;
     const details = () => {
         if(usernameNovo.length>8 && usernameNovo.length<32){
@@ -33,7 +33,7 @@ const Details = () => {
     const password = () => {
         navigate('Password')
     }
-
+    //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {

@@ -39,7 +39,7 @@ const EditarReview = () => {
                 })
             }
     }
-
+    //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == false) {
@@ -50,6 +50,7 @@ const EditarReview = () => {
             }
             setIdUser(response.data.user[0].Id)
         })
+        //Verificar review de um jogo
         Axios.get("http://localhost:3001/getReview", {
             params: { idReview }
         }).then((response) => {

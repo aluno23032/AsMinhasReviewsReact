@@ -31,7 +31,7 @@ const Index = () => {
                         window.location.reload(false);
                     }
                 })
-                //
+                //Update de upvote de um jogo
             } else if (uservote == -1) {
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
@@ -56,7 +56,7 @@ const Index = () => {
             navigate("/Account/Login")
         }
     })
-
+    //Update de downvote de uma review
     const downvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
             if (uservote == 1) {
@@ -93,7 +93,7 @@ const Index = () => {
             navigate("/Account/Login")
         }
     })
-
+    //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
@@ -103,13 +103,14 @@ const Index = () => {
             }
             setIdUser(response.data.user[0].Id)
             userId = response.data.user[0].Id
+            //Verificar review de um jogo
             Axios.get("http://localhost:3001/getReviewsJogo", {
                 params: { idJogo, userId }
             }).then((response) => {
                 setListaReviews(response.data);
             });
         })
-
+        //Verificar jogo
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
         }).then((response) => {

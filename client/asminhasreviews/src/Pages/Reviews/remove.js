@@ -28,7 +28,7 @@ const Index = () => {
             }
         });
     }
-
+    //Verificar review de um jogo
     useEffect(() => {
         Axios.get("http://localhost:3001/getReview", {
             params: { idReview }
@@ -38,6 +38,7 @@ const Index = () => {
             setJogoNome(response.data[0].JogoNome)
             setIdCriador(response.data[0].CriadorId)
         });
+        //Verificar utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId != "a" && response.data.user[0].Nome != nomeCriador) {
                 navigate("/Utilizadores/" + response.data[0].CriadorId)

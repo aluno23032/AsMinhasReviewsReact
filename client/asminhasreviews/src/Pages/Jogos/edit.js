@@ -77,7 +77,7 @@ const EditarJogo = () => {
                             })
                         }
     }
-
+    //Verificar Jogo
     useEffect(() => {
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
@@ -89,6 +89,7 @@ const EditarJogo = () => {
             setOldFotosLength(response.data[0].NumeroImgs)
             setOldNomeFormatado(response.data[0].NomeFormatado);
         });
+        //Verificar utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {
                 setRole("a")

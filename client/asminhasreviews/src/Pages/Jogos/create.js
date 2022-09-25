@@ -69,7 +69,7 @@ const CriarJogo = () => {
             })
         }
     }
-
+     //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId == "a") {

@@ -35,7 +35,7 @@ const Email = () => {
     const password = () => {
         navigate('/Account/Details/Password')
     }
-
+     //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {

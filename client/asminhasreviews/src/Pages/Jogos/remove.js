@@ -25,7 +25,7 @@ const Index = () => {
             }
         });
     }
-
+    //Verificar jogo
     useEffect(() => {
         Axios.get("http://localhost:3001/getJogo", {
             params: { idJogo }
@@ -36,6 +36,7 @@ const Index = () => {
                 setListaFotos(listaFotos => [...listaFotos, response.data[0].NomeFormatado + (i + 1) + ".png"])
             }
         });
+        //Verificar utilizador
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId != "a") {
                 Navigate("/Jogos/Index/Rating")

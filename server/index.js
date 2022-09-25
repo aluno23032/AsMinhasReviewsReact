@@ -38,7 +38,7 @@ const db = mysql.createConnection({
     password: "root",
     database: "reviews"
 })
-
+//Registar utilizador na base de dados
 app.post("/register", (req, res) => {
     const username = req.body.username
     const email = req.body.email
@@ -68,7 +68,7 @@ app.post("/register", (req, res) => {
         })
     })
 })
-
+//Efetuar login
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({ auth: true, user: req.session.user })
@@ -87,7 +87,7 @@ app.get("/getUsername", (req, res) => {
         }
     })
 })
-
+//Efetuar logout
 app.post("/logout", (req, res) => {
     res.send({ auth: false })
     req.session.destroy();
@@ -106,7 +106,7 @@ app.post("/details", (req, res) => {
         }
     })
 })
-
+//Efetuar mudança de Email na base de dados
 app.post("/changeEmail", (req, res) => {
     const email = req.body.email
     const emailNovo = req.body.emailNovo
@@ -119,7 +119,7 @@ app.post("/changeEmail", (req, res) => {
         }
     })
 })
-
+//Efetuar mudança de Password na base de dados
 app.post("/changePassword", (req, res) => {
     const password = req.body.password
     bcrypt.hash(password, saltRounds, (hash) => {
@@ -133,7 +133,7 @@ app.post("/changePassword", (req, res) => {
         })
     })
 })
-
+//Login nao efetuadp com sucesso
 app.post("/login", (req, res) => {
     const username = req.body.username
     const password = req.body.password
@@ -234,7 +234,7 @@ app.get("/listajogos", (req, res) => {
         });
     }
 });
-
+//Remoçao de jogo da base de dados sem sucesso
 app.post("/removerJogo", (req, res) => {
     const idJogo = req.body.idJogo
     const capa = req.body.capa
@@ -324,7 +324,7 @@ app.post("/jogoEditar", (req, res) => {
         res.send({ editado: "true" })
     })
 });
-
+//Remoçao de jogo da base de dados com sucesso
 app.post("/removerJogo", (req, res) => {
     const idJogo = req.body.idJogo
     const capa = req.body.capa

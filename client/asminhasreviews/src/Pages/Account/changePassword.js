@@ -36,7 +36,7 @@ const ChangePassword = () => {
     const details = () => {
         navigate('/Account/Details')
     }
-
+     //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.auth == true) {

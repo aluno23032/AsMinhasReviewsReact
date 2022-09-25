@@ -21,6 +21,7 @@ const Index = () => {
     const upvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
             if (uservote == 1) {
+                //Remover upvote de uma review
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -30,6 +31,7 @@ const Index = () => {
                     }
                 })
             } else if (uservote == -1) {
+                //Update do upvote de uma review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -39,6 +41,7 @@ const Index = () => {
                     }
                 })
             } else {
+                //Realizar upvote de uma review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: 1
                 }).then((response) => {
@@ -56,6 +59,7 @@ const Index = () => {
     const downvote = ((uservote, idReview, loginId) => () => {
         if (loginId) {
             if (uservote == 1) {
+                //Update do downvote de uma review
                 Axios.post("http://localhost:3001/votoUpdate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -65,6 +69,7 @@ const Index = () => {
                     }
                 })
             } else if (uservote == -1) {
+                //Remover downvote de uma review
                 Axios.post("http://localhost:3001/votoRemover", {
                     idReview: idReview, idUser: loginId
                 }).then((response) => {
@@ -74,6 +79,7 @@ const Index = () => {
                     }
                 })
             } else {
+                //Realizar downvote de uma review
                 Axios.post("http://localhost:3001/votoCreate", {
                     idReview: idReview, idUser: loginId, valor: -1
                 }).then((response) => {
@@ -87,7 +93,7 @@ const Index = () => {
             navigate("/Account/Login")
         }
     })
-
+    //Verificar utilizador
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.user[0].RoleId === "a" || response.data.user[0].Id === idCriador) {
@@ -105,6 +111,7 @@ const Index = () => {
                 setListaReviews(response.data);
             });
         })
+        //Verificar username do utilizador
         Axios.get("http://localhost:3001/getUsername", {
             params: { idCriador }
         }).then((response) => {
