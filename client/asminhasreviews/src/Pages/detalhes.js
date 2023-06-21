@@ -14,13 +14,11 @@ const Home = () => {
             <div>
                 <br/>
                 <span>Aplicação criada por:</span><br/>
-                <span>Eduardo Gomes - N.º 23032</span>
-                <p>Jorge Lavado - N.º 23037</p>
+                <span>Eduardo Gomes - N.º 23032</span><br/><br/>
                 <span>Bibliotecas e frameworks utilizadas:</span><br/>
                 <span>Axios</span><br/>
                 <span>Bcrypt</span><br/>
                 <span>Body-parser</span><br/>
-                <span>Bootstrap</span><br/>
                 <span>Cookie-parser</span><br/>
                 <span>Cors</span><br/>
                 <span>Dateformat</span><br/>
@@ -29,7 +27,7 @@ const Home = () => {
                 <p>React</p>
                 <span>Conta administrador: admin123</span>
                 <p>Password: admin123</p>
-                <span>Conta utilizador: josesilva</span>
+                <span>Exemplo de conta de utilizador: josesilva</span>
                 <p>Password: josesilva123</p>
             </div>
             <Footer/>

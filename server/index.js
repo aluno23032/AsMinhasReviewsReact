@@ -1,9 +1,9 @@
-const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const express = require("express");
 const session = require("express-session")
 const fileUpload = require('express-fileupload');
 fs = require('fs');
