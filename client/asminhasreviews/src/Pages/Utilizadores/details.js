@@ -153,7 +153,7 @@ const Index = () => {
                                         <div onClick={downvote(val.uservote, val.Id, idUser)} className={val.downvoteName}></div>
                                     </td>
                                     <td style={{ padding: "5px", width: "90%" }}>
-                                        <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}><a className="userLink" href={"../../Utilizadores/Details/" + val.Criador}>{val.JogoNome}</a></div>
+                                        <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}><a className="userLink" href={"../../Jogos/Details/" + val.Jogo}>{val.JogoNome}</a></div>
                                         <div style={{ float: "left", width: "100%", textAlign: "left" }}><a style={{ textDecoration: "none" }} href={"../../Reviews/Details/" + val.Id}><h3 className="conteudoReview">{val.Conteudo}</h3></a></div>
                                         <div style={{ float: "left", width: "90%", textAlign: "left", fontSize: "13.5px" }}>
                                             {dateFormat(val.DataCriacao, "dd")}/{dateFormat(val.DataCriacao, "mm")}/{dateFormat(val.DataCriacao, "yyyy")}
